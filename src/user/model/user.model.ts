@@ -1,17 +1,20 @@
-import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn } from 'typeorm';
-import { UUID } from 'typeorm/driver/mongodb/bson.typings';
+import { Team } from 'src/team/model/team.model';
+import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, ManyToMany } from 'typeorm';
 
 @Entity()
 export class User {
-  @PrimaryGeneratedColumn("uuid")
-  id: string;
+	@PrimaryGeneratedColumn("uuid")
+	id: string;
 
-  @Column({ length: 150 })
-  username: string;
+	@Column({ length: 150 })
+	username: string;
 
-  @Column()
-  email: string;
+	@Column()
+	email: string;
 
-  @CreateDateColumn({type : "date"})
-  createdAt : Date
+	@ManyToMany(() => Team, team => team.players)
+	teams : Team[]
+
+	@CreateDateColumn({type : "date"})
+	createdAt : Date
 }

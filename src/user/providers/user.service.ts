@@ -2,9 +2,10 @@ import { Injectable, Inject, HttpException, HttpStatus } from '@nestjs/common';
 import { Repository } from 'typeorm';
 import { User } from '../model/user.model';
 import { z } from "zod";
+import { CRUDFunctions } from '../../interfaces/repository.interface';
 
 @Injectable()
-export class UserService {
+export class UserService implements CRUDFunctions<User> {
 	constructor(
 		@Inject('USER_REPOSITORY')
 		private userRepository: Repository<User>,
@@ -12,13 +13,13 @@ export class UserService {
 
 	private userObjectValidator = z.object({
 		"id" : z.string().uuid(),
-		"name" : z.string(),
+		"username" : z.string(),
 		"email" : z.string().email()
 	});
 
 	async findAll(): Promise<User[]> {
 		try{
-			return this.userRepository.find();
+			return await this.userRepository.find();
 		}
 		catch(error){
 			throw new HttpException(
@@ -39,7 +40,7 @@ export class UserService {
 
 			const validatedId = z.string().uuid().parse(id);
 
-			return this.userRepository.findOneBy({
+			return await this.userRepository.findOneBy({
 				id : validatedId
 			});
 
@@ -63,11 +64,11 @@ export class UserService {
 		try{
 			const validatedUserObjectWithoutId = this.userObjectValidator.omit({"id" : true}).parse(user);
 
-			const createdUser = this.userRepository.create({
+			const createdUser = await this.userRepository.create({
 				...validatedUserObjectWithoutId
 			})
 
-			return this.userRepository.save(createdUser)
+			return await this.userRepository.save(createdUser)
 		}
 		catch(error){
 			throw new HttpException(
@@ -83,13 +84,12 @@ export class UserService {
 		}
 	}
 
-	async delete(id : string) : Promise<string> {
+	async delete(id : string) : Promise<void> {
 		try{
 			const validatedId = z.string().uuid().parse(id);
 
 			this.userRepository.delete(validatedId)
 
-			return id
 		}
 		catch(error){
 			throw new HttpException(
@@ -109,11 +109,11 @@ export class UserService {
 		try{
 			const validatedUser = this.userObjectValidator.omit({"id" : true}).parse(user);
 
-			this.userRepository.update(id,{
+			await this.userRepository.update(id,{
 				...validatedUser
 			})
 
-			return this.findOneById(id);
+			return await this.findOneById(id);
 		}
 		catch(error){
 			throw new HttpException(
