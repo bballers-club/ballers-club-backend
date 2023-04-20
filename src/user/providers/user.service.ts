@@ -62,7 +62,7 @@ export class UserService implements CRUDFunctions<User> {
 
 	async create(user : User): Promise<User> {
 		try{
-			const validatedUserObjectWithoutId = this.userObjectValidator.omit({"id" : true}).parse(user);
+			const validatedUserObjectWithoutId = this.userObjectValidator.parse(user);
 
 			const createdUser = await this.userRepository.create({
 				...validatedUserObjectWithoutId

@@ -1,10 +1,12 @@
 import { Controller, Delete, Get, Param, Post, Body, Put } from '@nestjs/common';
 import { UserService } from './providers/user.service';
 import { User } from './model/user.model';
+import { SkipAuth } from 'src/decorators/skip_auth.decorator';
 
 @Controller('user')
 export class UserController {
 	constructor(private readonly userService: UserService) {}
+
 
 	@Get()
 	async findAllUsers() : Promise<User[]> {
@@ -16,6 +18,7 @@ export class UserController {
 		return this.userService.findOneById(id)
 	}
 
+	@SkipAuth()
 	@Post()
 	async createUser( @Body() user : User) : Promise<User> {
 		return this.userService.create(user)
