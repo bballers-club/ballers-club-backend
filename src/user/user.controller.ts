@@ -8,6 +8,7 @@ export class UserController {
 	constructor(private readonly userService: UserService) {}
 
 
+	@SkipAuth()
 	@Get()
 	async findAllUsers() : Promise<User[]> {
 		return this.userService.findAll()

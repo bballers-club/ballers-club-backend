@@ -17,11 +17,13 @@ export class SupabaseAuthGuard extends AuthGuard('jwt') implements CanActivate  
 
 
   async canActivate(context: ExecutionContext): Promise<boolean>  {
-
+	
 	const isPublic = this.reflector.getAllAndOverride<boolean>(IS_PUBLIC_KEY, [
 	  context.getHandler(),
 	  context.getClass(),
 	]);
+	console.log(this.reflector)
+	console.log(isPublic)
 	if (isPublic) {
 	  return true;
 	}
