@@ -22,8 +22,7 @@ export class SupabaseAuthGuard extends AuthGuard('jwt') implements CanActivate  
 	  context.getHandler(),
 	  context.getClass(),
 	]);
-	console.log(this.reflector)
-	console.log(isPublic)
+
 	if (isPublic) {
 	  return true;
 	}
