@@ -4,7 +4,6 @@ import { z } from "zod";
 import { Repository } from 'typeorm';
 import { CRUDFunctions } from '../../interfaces/repository.interface';
 import { User } from 'src/user/model/user.model';
-import { cp } from 'fs';
 
 @Injectable()
 export class TeamService implements CRUDFunctions<Team>{
@@ -99,7 +98,7 @@ export class TeamService implements CRUDFunctions<Team>{
                 ...teamValidatorWithoutId
             });
 
-            return await this.findOneById(id);
+            return await this.findOneById(validatedId);
         }
         catch(error){
             throw new HttpException(
@@ -118,7 +117,7 @@ export class TeamService implements CRUDFunctions<Team>{
     async delete(id: string): Promise<void> {
         try{
             const teamInformations = await this.findOneById(id);
-            console.log(this.teamObjectValidator.safeParse(teamInformations).success, teamInformations)
+            
             if(this.teamObjectValidator.safeParse(teamInformations).success)
             {
                 const validatedPlayersNumber = z.object({
