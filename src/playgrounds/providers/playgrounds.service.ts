@@ -14,7 +14,7 @@ export class PlaygroundsService implements CRUDFunctions<Playground> {
         longitude : z.number()
     });
 
-    constructor(@Inject('TEAM_REPOSITORY') private playgroundRepository: Repository<Playground>){}
+    constructor(@Inject('PLAYGROUND_REPOSITORY') private playgroundRepository: Repository<Playground>){}
 
     async findAll(): Promise<Playground[]> {
         try{

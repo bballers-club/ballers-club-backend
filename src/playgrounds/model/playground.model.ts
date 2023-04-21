@@ -1,4 +1,3 @@
-import { Team } from 'src/team/model/team.model';
 import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, ManyToMany } from 'typeorm';
 
 @Entity()
