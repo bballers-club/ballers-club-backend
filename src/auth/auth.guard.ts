@@ -30,7 +30,10 @@ export class SupabaseAuthGuard extends AuthGuard('jwt') implements CanActivate  
 	const request = context.switchToHttp().getRequest();
 	const token = this.extractTokenFromHeader(request);
 	if (!token) {
-	  throw new UnauthorizedException();
+		throw new UnauthorizedException({
+			message : "JWT not found in the request header",
+			statusCode : 401
+		});
 	}
 
 	//Create a client to check wether the user is already authenticated or not
@@ -49,7 +52,10 @@ export class SupabaseAuthGuard extends AuthGuard('jwt') implements CanActivate  
 	const {error} = await this.supabaseClientInstance.auth.getUser(token)
 	
 	if(error){
-		throw new UnauthorizedException();
+		throw new UnauthorizedException({
+			message : "Unauthorized, authentication needed",
+			statusCode : 401
+		});
 	}
 
 	return true;

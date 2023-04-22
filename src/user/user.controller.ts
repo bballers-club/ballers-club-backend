@@ -1,4 +1,4 @@
-import { Controller, Delete, Get, Param, Post, Body, Put } from '@nestjs/common';
+import { Controller, Delete, Get, Param, Post, Body, Put, HttpCode } from '@nestjs/common';
 import { UserService } from './providers/user.service';
 import { User } from './model/user.model';
 import { SkipAuth } from 'src/decorators/skip_auth.decorator';
@@ -20,6 +20,7 @@ export class UserController {
 	}
 
 	@SkipAuth()
+	@HttpCode(201)
 	@Post()
 	async createUser( @Body() user : User) : Promise<User> {
 		return this.userService.create(user)

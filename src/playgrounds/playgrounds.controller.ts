@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Put, Delete, Param, Body } from '@nestjs/common';
+import { Controller, Get, Post, Put, Delete, Param, Body, HttpCode } from '@nestjs/common';
 import { PlaygroundsService } from './providers/playgrounds.service';
 import { Playground } from './model/playground.model';
 import { Coordinates } from 'src/interfaces/coordinates.interface';
@@ -24,6 +24,7 @@ export class PlaygroundsController {
 		return this.playgroundsService.findPlaygroundsAroundPlayer(userCoordinates.latitude, userCoordinates.longitude, radius)
 	}
 
+	@HttpCode(201)
 	@Post()
 	async createPlayground(@Body() playground : Playground) : Promise<Playground> {
 		return this.playgroundsService.create(playground)
