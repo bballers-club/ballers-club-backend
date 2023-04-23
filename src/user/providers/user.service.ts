@@ -1,20 +1,21 @@
 import { Injectable, Inject, HttpException, HttpStatus } from '@nestjs/common';
 import { Repository } from 'typeorm';
-import { User } from '../model/user.model';
+import { User } from '../entity/user.entity';
 import { z } from "zod";
-import { CRUDFunctions } from '../../interfaces/repository.interface';
 
 @Injectable()
-export class UserService implements CRUDFunctions<User> {
+export class UserService{
 	constructor(
 		@Inject('USER_REPOSITORY')
 		private userRepository: Repository<User>,
 	) {}
 
 	private userObjectValidator = z.object({
-		"id" : z.string().uuid(),
 		"username" : z.string(),
 		"email" : z.string().email()
+	}).partial({
+		username : true,
+		email : true
 	});
 
 	async findAll(): Promise<User[]> {
@@ -60,7 +61,10 @@ export class UserService implements CRUDFunctions<User> {
 		
 	}
 
-	async create(user : User): Promise<User> {
+	async create(user : {
+		username : string,
+		email : string
+	}): Promise<User> {
 		try{
 			const validatedUserObjectWithoutId = this.userObjectValidator.parse(user);
 
@@ -105,9 +109,12 @@ export class UserService implements CRUDFunctions<User> {
 		}
 	}
 
-	async update(id: string, user : User) : Promise<User> {
+	async update(id: string, user : {
+		username ?: string,
+		email ?: string
+	}) : Promise<User> {
 		try{
-			const validatedUser = this.userObjectValidator.omit({"id" : true}).parse(user);
+			const validatedUser = this.userObjectValidator.parse(user);
 
 			await this.userRepository.update(id,{
 				...validatedUser

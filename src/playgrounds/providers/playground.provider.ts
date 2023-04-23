@@ -1,5 +1,5 @@
 import { DataSource } from "typeorm/data-source";
-import { Playground } from "../model/playground.model";
+import { Playground } from "../entity/playground.entity";
 
 export const playgroundProvider = [
     {

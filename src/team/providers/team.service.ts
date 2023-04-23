@@ -1,19 +1,17 @@
 import { Injectable, Inject, HttpException, HttpStatus } from '@nestjs/common';
-import { Team } from "../model/team.model"
+import { Team } from "../entity/team.entity"
 import { z } from "zod";
 import { Repository } from 'typeorm';
-import { CRUDFunctions } from '../../interfaces/repository.interface';
-import { User } from 'src/user/model/user.model';
+import { User } from 'src/user/entity/user.entity';
 
 @Injectable()
-export class TeamService implements CRUDFunctions<Team>{
+export class TeamService{
     constructor(
 		@Inject('TEAM_REPOSITORY')
 		private teamRepository: Repository<Team>,
 	) {}
 
     private teamObjectValidator = z.object({
-        id : z.string().uuid(),
         name : z.string(),
         players : z.object({
             id : z.string()
@@ -65,9 +63,12 @@ export class TeamService implements CRUDFunctions<Team>{
         }
     }
 
-    async create(team : Team): Promise<Team> {
+    async create(team : {
+        name : string,
+        players ?: User[]
+    }): Promise<Team> {
         try{
-            const teamValidatorWithoutId = this.teamObjectValidator.omit({id : true}).parse(team)
+            const teamValidatorWithoutId = this.teamObjectValidator.parse(team)
 
             const createdTeam = await this.teamRepository.create({
                 ...teamValidatorWithoutId
@@ -89,10 +90,13 @@ export class TeamService implements CRUDFunctions<Team>{
         }
     }
 
-    async update(id: string, team: Team): Promise<Team> {
+    async update(id: string, team: {
+        name ?: string,
+        players ?: User[]
+    }): Promise<Team> {
         try{
             const validatedId = z.string().uuid().parse(id)
-            const teamValidatorWithoutId = this.teamObjectValidator.omit({id : true}).parse(team)
+            const teamValidatorWithoutId = this.teamObjectValidator.parse(team)
 
             await this.teamRepository.update(validatedId, {
                 ...teamValidatorWithoutId
@@ -116,7 +120,8 @@ export class TeamService implements CRUDFunctions<Team>{
 
     async delete(id: string): Promise<void> {
         try{
-            const teamInformations = await this.findOneById(id);
+            const validatedId = z.string().uuid().parse(id)
+            const teamInformations = await this.findOneById(validatedId);
             
             if(this.teamObjectValidator.safeParse(teamInformations).success)
             {
@@ -172,8 +177,8 @@ export class TeamService implements CRUDFunctions<Team>{
                 const newPlayer = new User();
                 newPlayer.id = validatedPlayerId
                 teamInfo.players.push(newPlayer)
-            }
-
+            } 
+            
             await this.teamRepository.save(teamInfo)
         }
         catch(error){

@@ -1,4 +1,6 @@
-import { Team } from './model/team.model';
+import { CreateTeamDto } from './dto/create-team.dto';
+import { UpdateTeamDto } from './dto/update-team.dto';
+import { Team } from './entity/team.entity';
 import { TeamService } from './providers/team.service';
 import { Controller, Delete, Get, Param, Post, Body, Put } from '@nestjs/common';
 
@@ -17,12 +19,12 @@ export class TeamController {
     }
 
     @Post()
-    async createTeam(@Body() team : Team) : Promise<Team> {
+    async createTeam(@Body() team : CreateTeamDto) : Promise<Team> {
         return this.teamService.create(team)
     }
 
     @Put(":id")
-    async updateTeam(@Param("id") id : string ,@Body() user : Team) : Promise<Team> {
+    async updateTeam(@Param("id") id : string ,@Body() user : UpdateTeamDto) : Promise<Team> {
         return this.teamService.update(id, user)
     }
 

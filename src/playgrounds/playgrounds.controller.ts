@@ -1,8 +1,10 @@
 import { Controller, Get, Post, Put, Delete, Param, Body } from '@nestjs/common';
 import { PlaygroundsService } from './providers/playgrounds.service';
-import { Playground } from './model/playground.model';
+import { Playground } from './entity/playground.entity';
 import { Coordinates } from 'src/interfaces/coordinates.interface';
 import { SkipAuth } from 'src/decorators/skip_auth.decorator';
+import { CreatePlaygroundDto } from './dto/create-playground.dto';
+import { UpdatePlaygroundDto } from './dto/update-playground.dto';
 
 @Controller('playgrounds')
 export class PlaygroundsController {
@@ -25,12 +27,12 @@ export class PlaygroundsController {
 	}
 
 	@Post()
-	async createPlayground(@Body() playground : Playground) : Promise<Playground> {
+	async createPlayground(@Body() playground : CreatePlaygroundDto) : Promise<Playground> {
 		return this.playgroundsService.create(playground)
 	}
 
 	@Put(":id")
-	async updatePlayground(@Param("id") id : string, @Body() playgroundUpdate : Playground) : Promise<Playground>{
+	async updatePlayground(@Param("id") id : string, @Body() playgroundUpdate : UpdatePlaygroundDto) : Promise<Playground>{
 		return this.playgroundsService.update(id, playgroundUpdate)
 	}
 

@@ -1,14 +1,12 @@
 import { Injectable,Inject ,HttpStatus, HttpException } from '@nestjs/common';
-import { CRUDFunctions } from 'src/interfaces/repository.interface';
-import { Playground } from '../model/playground.model';
+import { Playground } from '../entity/playground.entity';
 import { Repository } from 'typeorm';
 import { z } from "zod"
 
 @Injectable()
-export class PlaygroundsService implements CRUDFunctions<Playground> {
+export class PlaygroundsService{
 
     private playgroundObjectValidator = z.object({
-        id : z.string().uuid(),
         name : z.string(),
         latitude : z.number(),
         longitude : z.number()
@@ -54,9 +52,14 @@ export class PlaygroundsService implements CRUDFunctions<Playground> {
 			);
         }
     }
-    async create(playground: Playground): Promise<Playground> {
+    async create(playground: {
+        name : string,
+        address ?: string,
+        latitude : number,
+        longitude : number
+    }): Promise<Playground> {
         try{
-           const playgroundValidated = this.playgroundObjectValidator.omit({id : true}).parse(playground);
+           const playgroundValidated = this.playgroundObjectValidator.parse(playground);
 
            const createdPlayground = await this.playgroundRepository.create({
             ...playgroundValidated
@@ -77,7 +80,12 @@ export class PlaygroundsService implements CRUDFunctions<Playground> {
 			);
         }
     }
-    async update(id: string, playground: Playground): Promise<Playground> {
+    async update(id: string, playground: {
+        name ?: string,
+        address ?: string,
+        latitude ?: number,
+        longitude ?: number
+    }): Promise<Playground> {
         try{
             const validatedId = z.string().uuid().parse(id);
             const validatedPlayground = this.playgroundObjectValidator.parse(playground)
@@ -140,7 +148,7 @@ export class PlaygroundsService implements CRUDFunctions<Playground> {
                     Could or not be an error if he's already on a playground, we can still find others around
                     if 
                     (
-                       ( validatedUserLatitude === validatedPlaygroundLatitude ) || ( validatedUserLongitude == validatedPlaygroundLongitude)
+                       ( validatedUserLatitude === validatedPlaygroundLatitude ) && ( validatedUserLongitude == validatedPlaygroundLongitude)
                     )
                     {
                         throw new Error()
