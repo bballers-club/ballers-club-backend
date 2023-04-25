@@ -7,9 +7,11 @@ import { TeamModule } from './team/team.module';
 import { AuthModule } from './auth/auth.module';
 import { PlaygroundsModule } from './playgrounds/playgrounds.module';
 import { FriendshipModule } from './friendship/friendship.module';
+import { PlaygroundRequestModule } from './playground_request/playground_request.module';
+import { FriendshipRequestModule } from './friendship_request/friendship_request.module';
 
 @Module({
-  imports: [DatabaseModule, UserModule, TeamModule, AuthModule, PlaygroundsModule, FriendshipModule],
+  imports: [DatabaseModule, UserModule, TeamModule, AuthModule, PlaygroundsModule, FriendshipModule, PlaygroundRequestModule, FriendshipRequestModule],
   controllers: [AppController],
   providers: [AppService],
 })
