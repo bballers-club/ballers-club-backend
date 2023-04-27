@@ -4,18 +4,22 @@ import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { config } from "dotenv"
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
-  config()
+	const app = await NestFactory.create(AppModule);
+	config()
 
-  const swaggerConfig = new DocumentBuilder()
-    .setTitle('Ballers Club API')
-    .setDescription('Welcome to the Ballers Club API documentation')
-    .setVersion('1.0')
-    .addTag('ballers club')
-    .build();
-  const document = SwaggerModule.createDocument(app, swaggerConfig);
-  SwaggerModule.setup('ballers-club-api', app, document);
+	const swaggerConfig = new DocumentBuilder()
+		.setTitle('Ballers Club API')
+		.setDescription('Welcome to the Ballers Club API documentation')
+		.setVersion('1.0')
+		.addTag('ballers-club')
+		.build();
 
-  await app.listen(process.env.PORT);
+	const document = SwaggerModule.createDocument(app, swaggerConfig);
+
+	SwaggerModule.setup('ballers-club-api', app, document, {
+		customSiteTitle : "Ballers Club Swagger",
+	});
+
+	await app.listen(process.env.PORT);
 }
 bootstrap();

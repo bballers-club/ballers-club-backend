@@ -9,7 +9,7 @@ export class Playground {
 	name: string;
 
 	@Column({
-        nullable : true
+        nullable : false
     })
 	address: string;
 

@@ -153,10 +153,13 @@ export class TeamService{
         }
     }
 
-    async addPlayerIntoATeam(teamId : string, playerId : string) : Promise<void>{
+    async addPlayerIntoATeam(parameter : {
+        userId : string,
+        teamId : string
+    }) : Promise<void>{
         try{
-            const validatedTeamId       = z.string().uuid().parse(teamId)
-            const validatedPlayerId     = z.string().uuid().parse(playerId) 
+            const validatedTeamId       = z.string().uuid().parse(parameter.teamId)
+            const validatedPlayerId     = z.string().uuid().parse(parameter.userId) 
 
             const teamInfo    = (await this.teamRepository.findOne(
                 {

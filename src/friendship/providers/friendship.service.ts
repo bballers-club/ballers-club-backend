@@ -79,10 +79,13 @@ export class FriendshipService {
     }
    
 
-    async deleteFriendship(id : string, friendId : string) : Promise<void> {
+    async deleteFriendship(friendship : {
+        currentUserId : string,
+        userFriendId : string
+    }) : Promise<void> {
         try{
-            const currentUserValidatedId = z.string().uuid().parse(id);
-            const userFriendValidatedId  = z.string().uuid().parse(friendId);
+            const currentUserValidatedId = z.string().uuid().parse(friendship.currentUserId);
+            const userFriendValidatedId  = z.string().uuid().parse(friendship.userFriendId);
 
             await this.friendshipRepository.delete({
                 currentUserId : currentUserValidatedId,

@@ -12,7 +12,8 @@ export class FriendshipRequestDto {
     requestReceiverId : string;
 
     @ApiProperty({
-        description : "Date when the entry has been created, shouldn't provide it, auto generated when inserted"
+        description : "Date when the entry has been created, shouldn't provide it, auto generated when inserted",
+        nullable : true
     })
     createdAt : Date
 }
