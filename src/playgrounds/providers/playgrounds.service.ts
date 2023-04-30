@@ -168,7 +168,7 @@ export class PlaygroundsService{
                     dist = dist * 180/Math.PI
                     //We'll turn the value into meters
                     dist = ( (dist * 60 * 1.1515) * 1.609344 ) * 1000;
-
+                  
                     if(validatedRadius >= dist){
                         playgroundsInRadius.push(playground)
                     }

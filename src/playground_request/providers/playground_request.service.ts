@@ -14,6 +14,7 @@ export class PlaygroundRequestService {
     private playgroundRequestObjectValidator = z.object({
         id : z.string().uuid(),
         userId : z.string().uuid(),
+        name : z.string(),
         address : z.string(),
         latitude : z.number(),
         longitude : z.number(),
@@ -28,7 +29,7 @@ export class PlaygroundRequestService {
     }) : Promise<PlaygroundRequest> {
         try {
             const playgroundRequestValidated = this.playgroundRequestObjectValidator.omit({ id : true}).parse(playgroundRequest)
-
+            console.log(playgroundRequestValidated);
             const createdPlayground = this.playgroundRequestRepository.create({
                 ...playgroundRequestValidated
             });

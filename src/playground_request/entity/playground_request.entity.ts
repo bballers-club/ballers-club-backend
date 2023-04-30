@@ -16,9 +16,13 @@ export class PlaygroundRequest {
     @Column()
     address : string;
 
-    @Column()
+    @Column({
+        type : "double precision"
+    })
     latitude : number;
 
-    @Column()
+    @Column({
+        type : "double precision"
+    })
     longitude : number
 }

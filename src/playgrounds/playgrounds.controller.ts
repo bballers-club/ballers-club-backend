@@ -54,8 +54,6 @@ export class PlaygroundsController {
 	@Get("playground-in-radius/:radius")
 	async findPlaygroundInRadius(@Param("radius") radius : number, @Query("latitude") latitude : string, @Query("longitude") longitude : string){
 
-
-
 		return this.playgroundsService.findPlaygroundsAroundPlayer(Number(latitude), Number(longitude), Number(radius) )
 	}
 
