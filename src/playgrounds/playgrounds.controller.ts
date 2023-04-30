@@ -7,6 +7,7 @@ import { CreatePlaygroundDto } from './dto/create-playground.dto';
 import { UpdatePlaygroundDto } from './dto/update-playground.dto';
 import { ApiTags, ApiResponse, ApiBody, ApiParam } from '@nestjs/swagger';
 import { number, string } from 'zod';
+import { PlaygroundDto } from './dto/playground.dto';
 
 @Controller('playgrounds')
 export class PlaygroundsController {
@@ -15,7 +16,7 @@ export class PlaygroundsController {
 	@ApiTags("playgrounds")
 	@ApiResponse({
 		status : 200,
-		type : Playground
+		type : PlaygroundDto
 	})
 	@SkipAuth()
 	@Get() 
@@ -26,7 +27,7 @@ export class PlaygroundsController {
 	@ApiTags("playgrounds")
 	@ApiResponse({
 		status : 200,
-		type : Playground
+		type : PlaygroundDto
 	})
 	@Get(":id")
 	async findPlaygroundById(@Param("id") id : string) : Promise<Playground>{

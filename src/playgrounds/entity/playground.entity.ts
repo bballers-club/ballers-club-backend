@@ -1,4 +1,4 @@
-import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, ManyToMany } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, ManyToMany, Double } from 'typeorm';
 
 @Entity()
 export class Playground {
@@ -13,10 +13,14 @@ export class Playground {
     })
 	address: string;
 
-	@Column()
+	@Column({
+		type : "double"
+	})
     latitude : number
 
-    @Column()
+    @Column({
+		type : "double"
+	})
     longitude : number
 
 }
