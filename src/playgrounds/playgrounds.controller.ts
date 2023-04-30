@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Put, Delete, Param, Body } from '@nestjs/common';
+import { Controller, Get, Post, Put, Delete, Param, Body, Query } from '@nestjs/common';
 import { PlaygroundsService } from './providers/playgrounds.service';
 import { Playground } from './entity/playground.entity';
 import { Coordinates } from 'src/interfaces/coordinates.interface';
@@ -6,7 +6,7 @@ import { SkipAuth } from 'src/decorators/skip_auth.decorator';
 import { CreatePlaygroundDto } from './dto/create-playground.dto';
 import { UpdatePlaygroundDto } from './dto/update-playground.dto';
 import { ApiTags, ApiResponse, ApiBody, ApiParam } from '@nestjs/swagger';
-import { number, string } from 'zod';
+import { number} from 'zod';
 import { PlaygroundDto } from './dto/playground.dto';
 
 @Controller('playgrounds')
@@ -52,8 +52,11 @@ export class PlaygroundsController {
 		}
 	})
 	@Get("playground-in-radius/:radius")
-	async findPlaygroundInRadius(@Param("radius") radius : number, @Body() userCoordinates : Coordinates){
-		return this.playgroundsService.findPlaygroundsAroundPlayer(userCoordinates.latitude, userCoordinates.longitude, radius)
+	async findPlaygroundInRadius(@Param("radius") radius : number, @Query("latitude") latitude : string, @Query("longitude") longitude : string){
+
+
+
+		return this.playgroundsService.findPlaygroundsAroundPlayer(Number(latitude), Number(longitude), Number(radius) )
 	}
 
 	@ApiResponse({

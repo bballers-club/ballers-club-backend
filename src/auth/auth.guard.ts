@@ -29,6 +29,7 @@ export class SupabaseAuthGuard extends AuthGuard('jwt') implements CanActivate  
 
 	const request = context.switchToHttp().getRequest();
 	const token = this.extractTokenFromHeader(request);
+	console.log(token)
 	if (!token) {
 	  throw new UnauthorizedException();
 	}
@@ -46,8 +47,8 @@ export class SupabaseAuthGuard extends AuthGuard('jwt') implements CanActivate  
 	)
 
 	//If an error is raised, means no session existing for this user otherwise no errors are raised
-	const {error} = await this.supabaseClientInstance.auth.getUser(token)
-	
+	const {data,error} = await this.supabaseClientInstance.auth.getUser(token)
+	console.log(data,error)
 	if(error){
 		throw new UnauthorizedException();
 	}
