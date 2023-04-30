@@ -14,12 +14,12 @@ export class Playground {
 	address: string;
 
 	@Column({
-		type : "double"
+		type : "double precision"
 	})
     latitude : number
 
     @Column({
-		type : "double"
+		type : "double precision"
 	})
     longitude : number
 
