@@ -7,7 +7,13 @@ export class PlaygroundRequest {
     @PrimaryGeneratedColumn("uuid")
     id : string
 
-    @ManyToOne(() => User, user => user.id)
+    @Column("uuid")
+    userId : string
+
+    @ManyToOne(() => User, user => user.id,{
+        nullable : false,
+        cascade : ["insert"]
+    })
     user : User
 
     @Column()
