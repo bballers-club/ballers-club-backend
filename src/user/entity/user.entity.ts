@@ -23,11 +23,11 @@ export class User {
   @ManyToMany(() => Team, (team) => team.players)
   teams: Team[];
 
-  @OneToMany(() => Friendship, (friendship) => friendship.currentUser)
-  currentUser: Friendship[];
+  @OneToMany(() => Friendship, (friendship) => friendship.userOne)
+  userOne: Friendship[];
 
-  @OneToMany(() => Friendship, (friendship) => friendship.userFriend)
-  userFriend: Friendship[];
+  @OneToMany(() => Friendship, (friendship) => friendship.userTwo)
+  userTwo: Friendship[];
 
   @CreateDateColumn({ type: 'date' })
   createdAt: Date;

@@ -9,10 +9,10 @@ export class FriendshipRequest {
   @PrimaryColumn('uuid')
   requestReceiverId: string;
 
-  @ManyToOne(() => User, (user) => user.currentUser)
+  @ManyToOne(() => User, (user) => user.userOne)
   requestSender: User;
 
-  @ManyToOne(() => User, (user) => user.userFriend)
+  @ManyToOne(() => User, (user) => user.userTwo)
   requestReceiver: User;
 
   @CreateDateColumn({

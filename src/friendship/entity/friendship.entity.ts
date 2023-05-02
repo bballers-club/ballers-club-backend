@@ -4,16 +4,16 @@ import { User } from '../../user/entity/user.entity';
 @Entity()
 export class Friendship {
   @PrimaryColumn('uuid')
-  currentUserId: string;
+  userOneId: string;
 
   @PrimaryColumn('uuid')
-  userFriendId: string;
+  userTwoId: string;
 
-  @ManyToOne(() => User, (user) => user.currentUser)
-  currentUser: User;
+  @ManyToOne(() => User, (user) => user.userOne)
+  userOne: User;
 
-  @ManyToOne(() => User, (user) => user.userFriend)
-  userFriend: User;
+  @ManyToOne(() => User, (user) => user.userTwo)
+  userTwo: User;
 
   @CreateDateColumn({ type: 'date' })
   createdAt: Date;

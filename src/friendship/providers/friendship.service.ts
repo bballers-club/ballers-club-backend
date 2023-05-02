@@ -17,8 +17,8 @@ export class FriendshipService {
   ) {}
 
   private friendshipObjectValidator = z.object({
-    currentUserId: z.string().uuid(),
-    userFriendId: z.string().uuid(),
+    userOneId: z.string().uuid(),
+    userTwoId: z.string().uuid(),
   });
 
   async findAll(): Promise<Friendship[]> {
@@ -37,13 +37,21 @@ export class FriendshipService {
       );
     }
   }
-  async findAllFriendshipOfOneUser(currentUser: string): Promise<Friendship> {
+  async findAllFriendshipOfOneUser(currentUser: string): Promise<Friendship[]> {
     try {
       const validatedId = z.string().uuid().parse(currentUser);
-
-      return await this.friendshipRepository.findOneBy({
-        currentUserId: validatedId,
+      
+      return await this.friendshipRepository.find({
+        where : [
+          { userOneId : validatedId},
+          { userTwoId : validatedId}
+        ],
+        relations : {
+            userOne : true,
+            userTwo : true
+        }
       });
+
     } catch (error) {
       throw new HttpException(
         {
@@ -59,8 +67,8 @@ export class FriendshipService {
   }
 
   async create(friendship: {
-    currentUserId: string;
-    userFriendId: string;
+    userOneId: string;
+    userTwoId: string;
   }): Promise<Friendship> {
     try {
       const validatedFriendship =
@@ -85,22 +93,22 @@ export class FriendshipService {
   }
 
   async deleteFriendship(friendship: {
-    currentUserId: string;
-    userFriendId: string;
+    userOneId: string;
+    userTwoId: string;
   }): Promise<void> {
     try {
       const currentUserValidatedId = z
         .string()
         .uuid()
-        .parse(friendship.currentUserId);
+        .parse(friendship.userOneId);
       const userFriendValidatedId = z
         .string()
         .uuid()
-        .parse(friendship.userFriendId);
+        .parse(friendship.userTwoId);
 
       await this.friendshipRepository.delete({
-        currentUserId: currentUserValidatedId,
-        userFriendId: userFriendValidatedId,
+        userOneId: currentUserValidatedId,
+        userTwoId: userFriendValidatedId,
       });
     } catch (error) {
       throw new HttpException(

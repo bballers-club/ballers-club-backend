@@ -26,7 +26,7 @@ export class FriendshipController {
   })
   @ApiTags('friendship')
   @Get(':id')
-  async findOneFriendshipOfUser(@Param('id') id: string): Promise<Friendship> {
+  async findFriendshipsOfUser(@Param('id') id: string): Promise<Friendship[]> {
     return await this.friendshipService.findAllFriendshipOfOneUser(id);
   }
 

@@ -4,10 +4,10 @@ export class CreateFriendshipDto {
   @ApiProperty({
     description: 'Authenticated user id',
   })
-  currentUserId: string;
+  userOneId : string;
 
   @ApiProperty({
     description: 'Id of the friend of the authenticated user',
   })
-  userFriendId: string;
+  userTwoId : string;
 }

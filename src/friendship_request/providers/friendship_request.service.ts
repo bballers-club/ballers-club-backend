@@ -130,14 +130,14 @@ export class FriendshipRequestService {
       });
 
       const friendshipExistFirstCheck = await this.friendshipRepository.findBy({
-        currentUserId: requestSender,
-        userFriendId: requestReceiver,
+        userOneId: requestSender,
+        userTwoId: requestReceiver,
       });
 
       const friendshipExistSecondCheck = await this.friendshipRepository.findBy(
         {
-          currentUserId: requestReceiver,
-          userFriendId: requestSender,
+          userOneId: requestReceiver,
+          userTwoId: requestSender,
         },
       );
 
