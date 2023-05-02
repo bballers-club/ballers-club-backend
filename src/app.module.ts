@@ -11,7 +11,16 @@ import { PlaygroundRequestModule } from './playground_request/playground_request
 import { FriendshipRequestModule } from './friendship_request/friendship_request.module';
 
 @Module({
-  imports: [DatabaseModule, UserModule, TeamModule, AuthModule, PlaygroundsModule, FriendshipModule, PlaygroundRequestModule, FriendshipRequestModule],
+  imports: [
+    DatabaseModule,
+    UserModule,
+    TeamModule,
+    AuthModule,
+    PlaygroundsModule,
+    FriendshipModule,
+    PlaygroundRequestModule,
+    FriendshipRequestModule,
+  ],
   controllers: [AppController],
   providers: [AppService],
 })

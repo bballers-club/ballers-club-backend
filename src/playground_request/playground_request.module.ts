@@ -5,8 +5,8 @@ import { DatabaseModule } from 'src/supabase_database/supabase_database.module';
 import { playgroundRequestProvider } from './providers/playground_request.provider';
 
 @Module({
-  imports : [DatabaseModule],
+  imports: [DatabaseModule],
   controllers: [PlaygroundRequestController],
-  providers: [...playgroundRequestProvider,PlaygroundRequestService]
+  providers: [...playgroundRequestProvider, PlaygroundRequestService],
 })
 export class PlaygroundRequestModule {}

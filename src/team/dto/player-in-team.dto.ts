@@ -1,13 +1,13 @@
-import { ApiProperty } from "@nestjs/swagger";
+import { ApiProperty } from '@nestjs/swagger';
 
-export class PlayerInTeamDto {
-    @ApiProperty({
-        description : "UUID of the user"
-    })
-    userId : string;
+export class PlayerInTeamDto {
+  @ApiProperty({
+    description: 'UUID of the user',
+  })
+  userId: string;
 
-    @ApiProperty({
-        description : "UUID of the team"
-    })
-    teamId : string;
+  @ApiProperty({
+    description: 'UUID of the team',
+  })
+  teamId: string;
 }

@@ -11,7 +11,9 @@ describe('PlaygroundRequestController', () => {
       providers: [PlaygroundRequestService],
     }).compile();
 
-    controller = module.get<PlaygroundRequestController>(PlaygroundRequestController);
+    controller = module.get<PlaygroundRequestController>(
+      PlaygroundRequestController,
+    );
   });
 
   it('should be defined', () => {

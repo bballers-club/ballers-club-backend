@@ -7,6 +7,6 @@ import { DatabaseModule } from '../supabase_database/supabase_database.module';
 @Module({
   imports: [DatabaseModule],
   controllers: [FriendshipController],
-  providers: [...friendshipProvider,FriendshipService]
+  providers: [...friendshipProvider, FriendshipService],
 })
 export class FriendshipModule {}

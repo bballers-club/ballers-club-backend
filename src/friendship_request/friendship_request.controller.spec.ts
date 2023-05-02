@@ -11,7 +11,9 @@ describe('FriendshipRequestController', () => {
       providers: [FriendshipRequestService],
     }).compile();
 
-    controller = module.get<FriendshipRequestController>(FriendshipRequestController);
+    controller = module.get<FriendshipRequestController>(
+      FriendshipRequestController,
+    );
   });
 
   it('should be defined', () => {

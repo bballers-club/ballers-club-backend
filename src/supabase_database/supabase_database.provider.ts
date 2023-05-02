@@ -5,10 +5,10 @@ export const databaseProviders = [
   {
     provide: 'DATA_SOURCE',
     useFactory: async () => {
-        //Initializing env variables
-        config();
-      
-        const dataSource = new DataSource({
+      //Initializing env variables
+      config();
+
+      const dataSource = new DataSource({
         type: 'postgres',
         host: process.env.DB_HOST,
         port: Number(process.env.DB_PORT),
@@ -17,9 +17,9 @@ export const databaseProviders = [
         database: process.env.DB_NAME,
         entities: [__dirname + '/../**/*.entity{.ts,.js}'],
         synchronize: true,
-        });
+      });
 
-        return dataSource.initialize();
+      return dataSource.initialize();
     },
   },
 ];
