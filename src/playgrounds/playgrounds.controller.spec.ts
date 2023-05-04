@@ -3,18 +3,18 @@ import { PlaygroundsController } from './playgrounds.controller';
 import { PlaygroundsService } from './providers/playgrounds.service';
 
 describe('PlaygroundsController', () => {
-  let controller: PlaygroundsController;
+	let controller: PlaygroundsController;
 
-  beforeEach(async () => {
-    const module: TestingModule = await Test.createTestingModule({
-      controllers: [PlaygroundsController],
-      providers: [PlaygroundsService],
-    }).compile();
+	beforeEach(async () => {
+		const module: TestingModule = await Test.createTestingModule({
+			controllers: [PlaygroundsController],
+			providers: [PlaygroundsService],
+		}).compile();
 
-    controller = module.get<PlaygroundsController>(PlaygroundsController);
-  });
+		controller = module.get<PlaygroundsController>(PlaygroundsController);
+	});
 
-  it('should be defined', () => {
-    expect(controller).toBeDefined();
-  });
+	it('should be defined', () => {
+		expect(controller).toBeDefined();
+	});
 });

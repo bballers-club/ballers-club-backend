@@ -3,18 +3,18 @@ import { FriendshipController } from './friendship.controller';
 import { FriendshipService } from './providers/friendship.service';
 
 describe('FriendshipController', () => {
-  let controller: FriendshipController;
+	let controller: FriendshipController;
 
-  beforeEach(async () => {
-    const module: TestingModule = await Test.createTestingModule({
-      controllers: [FriendshipController],
-      providers: [FriendshipService],
-    }).compile();
+	beforeEach(async () => {
+		const module: TestingModule = await Test.createTestingModule({
+			controllers: [FriendshipController],
+			providers: [FriendshipService],
+		}).compile();
 
-    controller = module.get<FriendshipController>(FriendshipController);
-  });
+		controller = module.get<FriendshipController>(FriendshipController);
+	});
 
-  it('should be defined', () => {
-    expect(controller).toBeDefined();
-  });
+	it('should be defined', () => {
+		expect(controller).toBeDefined();
+	});
 });

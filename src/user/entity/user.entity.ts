@@ -1,34 +1,51 @@
 import { Team } from 'src/team/entity/team.entity';
 import { Friendship } from 'src/friendship/entity/friendship.entity';
 import {
-  Entity,
-  Column,
-  PrimaryGeneratedColumn,
-  CreateDateColumn,
-  ManyToMany,
-  OneToMany,
+	Entity,
+	Column,
+	PrimaryGeneratedColumn,
+	CreateDateColumn,
+	ManyToMany,
+	OneToMany,
 } from 'typeorm';
 
 @Entity()
 export class User {
-  @PrimaryGeneratedColumn('uuid')
-  id: string;
+	@PrimaryGeneratedColumn('uuid')
+	id: string;
 
-  @Column({ length: 150 })
-  username: string;
+	@Column({ length: 150 })
+	username: string;
 
-  @Column()
-  email: string;
+	@Column({
+		default: '00',
+	})
+	rank: number;
 
-  @ManyToMany(() => Team, (team) => team.players)
-  teams: Team[];
+	@Column({
+		default: 0,
+	})
+	gamesPlayed: number;
 
-  @OneToMany(() => Friendship, (friendship) => friendship.userOne)
-  userOne: Friendship[];
+	@Column({
+		default: 0,
+	})
+	gamesWon: number;
 
-  @OneToMany(() => Friendship, (friendship) => friendship.userTwo)
-  userTwo: Friendship[];
+	@Column({
+		default: 0,
+	})
+	gamesLost: number;
 
-  @CreateDateColumn({ type: 'date' })
-  createdAt: Date;
+	@ManyToMany(() => Team, (team) => team.players)
+	teams: Team[];
+
+	@OneToMany(() => Friendship, (friendship) => friendship.userOne)
+	userOne: Friendship[];
+
+	@OneToMany(() => Friendship, (friendship) => friendship.userTwo)
+	userTwo: Friendship[];
+
+	@CreateDateColumn({ type: 'date' })
+	createdAt: Date;
 }

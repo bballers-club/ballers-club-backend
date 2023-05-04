@@ -6,12 +6,12 @@ import { friendshipRequestProvider } from './providers/friendship_request.provid
 import { friendshipProvider } from 'src/friendship/providers/friendship.provider';
 
 @Module({
-  imports: [DatabaseModule],
-  controllers: [FriendshipRequestController],
-  providers: [
-    ...friendshipRequestProvider,
-    ...friendshipProvider,
-    FriendshipRequestService,
-  ],
+	imports: [DatabaseModule],
+	controllers: [FriendshipRequestController],
+	providers: [
+		...friendshipRequestProvider,
+		...friendshipProvider,
+		FriendshipRequestService,
+	],
 })
 export class FriendshipRequestModule {}

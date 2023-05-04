@@ -5,8 +5,8 @@ import { DatabaseModule } from '../supabase_database/supabase_database.module';
 import { teamProvider } from './providers/team.provider';
 
 @Module({
-  imports: [DatabaseModule],
-  controllers: [TeamController],
-  providers: [...teamProvider, TeamService],
+	imports: [DatabaseModule],
+	controllers: [TeamController],
+	providers: [...teamProvider, TeamService],
 })
 export class TeamModule {}

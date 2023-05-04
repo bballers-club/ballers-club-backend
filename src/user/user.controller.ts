@@ -1,11 +1,11 @@
 import {
-  Controller,
-  Delete,
-  Get,
-  Param,
-  Post,
-  Body,
-  Put,
+	Controller,
+	Delete,
+	Get,
+	Param,
+	Post,
+	Body,
+	Put,
 } from '@nestjs/common';
 import { UserService } from './providers/user.service';
 import { User } from './entity/user.entity';
@@ -17,56 +17,56 @@ import { UserDto } from './dto/user.dto';
 
 @Controller('user')
 export class UserController {
-  constructor(private readonly userService: UserService) {}
+	constructor(private readonly userService: UserService) {}
 
-  @SkipAuth()
-  @ApiTags('user')
-  @ApiResponse({
-    status: 200,
-    type: UserDto,
-  })
-  @Get()
-  async findAllUsers(): Promise<User[]> {
-    return this.userService.findAll();
-  }
+	@SkipAuth()
+	@ApiTags('user')
+	@ApiResponse({
+		status: 200,
+		type: UserDto,
+	})
+	@Get()
+	async findAllUsers(): Promise<User[]> {
+		return this.userService.findAll();
+	}
 
-  @ApiTags('user')
-  @ApiResponse({
-    status: 200,
-    type: UserDto,
-  })
-  @Get(':id')
-  async findOneById(@Param('id') id: string): Promise<User> {
-    return this.userService.findOneById(id);
-  }
+	@ApiTags('user')
+	@ApiResponse({
+		status: 200,
+		type: UserDto,
+	})
+	@Get(':id')
+	async findOneById(@Param('id') id: string): Promise<User> {
+		return this.userService.findOneById(id);
+	}
 
-  @SkipAuth()
-  @ApiTags('user')
-  @ApiResponse({
-    status: 201,
-    type: UserDto,
-  })
-  @Post()
-  async createUser(@Body() user: CreateUserDto): Promise<User> {
-    return this.userService.create(user);
-  }
+	@SkipAuth()
+	@ApiTags('user')
+	@ApiResponse({
+		status: 201,
+		type: UserDto,
+	})
+	@Post()
+	async createUser(@Body() user: CreateUserDto): Promise<User> {
+		return this.userService.create(user);
+	}
 
-  @ApiTags('user')
-  @ApiResponse({
-    status: 200,
-    type: UserDto,
-  })
-  @Put(':id')
-  async updateUser(
-    @Param('id') id: string,
-    @Body() user: UpdateUserDto,
-  ): Promise<User> {
-    return this.userService.update(id, user);
-  }
+	@ApiTags('user')
+	@ApiResponse({
+		status: 200,
+		type: UserDto,
+	})
+	@Put(':id')
+	async updateUser(
+		@Param('id') id: string,
+		@Body() user: UpdateUserDto,
+	): Promise<User> {
+		return this.userService.update(id, user);
+	}
 
-  @ApiTags('user')
-  @Delete(':id')
-  async deleteUser(@Param('id') id: string): Promise<void> {
-    this.userService.delete(id);
-  }
+	@ApiTags('user')
+	@Delete(':id')
+	async deleteUser(@Param('id') id: string): Promise<void> {
+		this.userService.delete(id);
+	}
 }
