@@ -7,11 +7,12 @@ import {
 	CreateDateColumn,
 	ManyToMany,
 	OneToMany,
+	PrimaryColumn,
 } from 'typeorm';
 
 @Entity()
 export class User {
-	@PrimaryGeneratedColumn('uuid')
+	@PrimaryColumn('uuid')
 	id: string;
 
 	@Column({ length: 150 })
@@ -36,6 +37,21 @@ export class User {
 		default: 0,
 	})
 	gamesLost: number;
+
+	@Column({
+		nullable: true,
+	})
+	avatarUrl: string;
+
+	@Column({
+		nullable: true,
+	})
+	level: string;
+
+	@Column({
+		nullable: true,
+	})
+	position: string;
 
 	@ManyToMany(() => Team, (team) => team.players)
 	teams: Team[];

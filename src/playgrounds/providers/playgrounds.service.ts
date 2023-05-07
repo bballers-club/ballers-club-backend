@@ -138,14 +138,15 @@ export class PlaygroundsService {
 		try {
 			const playgrounds = await this.findAll();
 			const playgroundsInRadius: Playground[] = [];
-
+			const validatedLatitude = z.number().parse(latitude);
+			const validatedLongitude = z.number().parse(longitude);
 			if (playgrounds.length > 0) {
 				playgrounds.forEach((playground) => {
 					const validatedRadius = z.number().parse(radius);
 
 					const dist = this.calculateDistanceBetweenPositions(
-						latitude,
-						longitude,
+						validatedLatitude,
+						validatedLongitude,
 						playground.latitude,
 						playground.longitude,
 					);
@@ -178,8 +179,8 @@ export class PlaygroundsService {
 		longitude2: number,
 	): number {
 		let dist = 1;
-		const validatedLatitude1 = z.number().parse(latitude1);
-		const validatedLongitude1 = z.number().parse(longitude1);
+		const validatedLatitude1 = latitude1
+		const validatedLongitude1 = longitude2;
 		const validatedLatitude2 = z.number().parse(latitude2);
 		const validatedLongitude2 = z.number().parse(longitude2);
 

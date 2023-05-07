@@ -12,12 +12,12 @@ export class UserService {
 
 	private userObjectValidator = z
 		.object({
+			id: z.string().uuid(),
 			username: z.string(),
-			email: z.string().email(),
 		})
 		.partial({
+			id: true,
 			username: true,
-			email: true,
 		});
 
 	async findAll(): Promise<User[]> {
@@ -58,7 +58,13 @@ export class UserService {
 		}
 	}
 
-	async create(user: { username: string }): Promise<User> {
+	async create(user: {
+		id: string,
+		username: string,
+		level: string,
+		position: string,
+		avatarUrl: string,
+	}): Promise<User> {
 		try {
 			const validatedUserObjectWithoutId =
 				this.userObjectValidator.parse(user);

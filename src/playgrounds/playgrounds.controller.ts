@@ -66,8 +66,8 @@ export class PlaygroundsController {
 		@Query('longitude') longitude: string,
 	) {
 		return this.playgroundsService.findPlaygroundsAroundPlayer(
-			Number(latitude),
-			Number(longitude),
+			Number.parseFloat(latitude),
+			Number.parseFloat(longitude),
 			Number(radius),
 		);
 	}

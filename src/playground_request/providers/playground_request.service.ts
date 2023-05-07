@@ -124,7 +124,6 @@ export class PlaygroundRequestService {
 
 			const playgroundRequests = await this.findAll();
 			const playgroundsInRadius: PlaygroundRequest[] = [];
-
 			if (playgroundRequests.length > 0) {
 				playgroundRequests.forEach((playgroundRequest) => {
 					const dist =

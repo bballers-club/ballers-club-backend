@@ -58,6 +58,7 @@ export class PlaygroundRequestController {
 		return await this.playgroundRequestService.remove(+id);
 	}
 
+	@ApiTags('playground-request')
 	@Get('playground-in-radius/:radius')
 	async findPlaygroundInRadius(
 		@Param('radius') radius: number,
@@ -65,9 +66,9 @@ export class PlaygroundRequestController {
 		@Query('longitude') longitude: string,
 	) {
 		return await this.playgroundRequestService.findPlaygroundRequestsAroundPlayer(
+			Number(radius),
 			Number(latitude),
 			Number(longitude),
-			Number(radius),
 		);
 	}
 }
