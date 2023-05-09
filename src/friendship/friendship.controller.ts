@@ -5,6 +5,7 @@ import { CreateFriendshipDto } from './dto/create-friendship.dto';
 import { ApiTags, ApiResponse, ApiBody } from '@nestjs/swagger';
 import { FriendshipDto } from './dto/friendship.dto';
 import { DeleteFriendshipDto } from './dto/delete-friendship.dto';
+import { OneUserFriendshipDTO } from './dto/one-user-friendship.dto';
 
 @Controller('friendship')
 export class FriendshipController {
@@ -26,10 +27,16 @@ export class FriendshipController {
 	})
 	@ApiTags('friendship')
 	@Get(':id')
-	async findFriendshipsOfUser(
-		@Param('id') id: string,
-	): Promise<Friendship[]> {
-		return await this.friendshipService.findAllFriendshipOfOneUser(id);
+	async findFriendshipsOfUser(@Param('id') id: string): Promise<{
+		friendsInformations: OneUserFriendshipDTO[];
+		totalFriendship: number;
+	}> {
+		const friendships =
+			await this.friendshipService.findAllFriendshipOfOneUser(id);
+		return {
+			friendsInformations: friendships,
+			totalFriendship: friendships.length,
+		};
 	}
 
 	@ApiResponse({

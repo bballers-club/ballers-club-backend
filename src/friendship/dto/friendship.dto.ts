@@ -1,5 +1,4 @@
 import { ApiProperty } from '@nestjs/swagger';
-
 export class FriendshipDto {
 	@ApiProperty({
 		description: 'Authenticated user id',

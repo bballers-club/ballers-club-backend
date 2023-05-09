@@ -2,6 +2,7 @@ import { Injectable, Inject, HttpException, HttpStatus } from '@nestjs/common';
 import { Friendship } from '../entity/friendship.entity';
 import { Repository } from 'typeorm';
 import { z } from 'zod';
+import { OneUserFriendshipDTO } from '../dto/one-user-friendship.dto';
 
 @Injectable()
 export class FriendshipService {
@@ -33,17 +34,42 @@ export class FriendshipService {
 	}
 	async findAllFriendshipOfOneUser(
 		currentUser: string,
-	): Promise<Friendship[]> {
+	): Promise<OneUserFriendshipDTO[]> {
 		try {
 			const validatedId = z.string().uuid().parse(currentUser);
-
-			return await this.friendshipRepository.find({
+			const foundFriends = await this.friendshipRepository.find({
 				where: [{ userOneId: validatedId }, { userTwoId: validatedId }],
 				relations: {
 					userOne: true,
 					userTwo: true,
 				},
 			});
+
+			const formattedFriends: OneUserFriendshipDTO[] = [];
+
+			foundFriends.map((data) => {
+				if (data.userOneId === validatedId) {
+					formattedFriends.push({
+						userId: data.userTwoId,
+						username: data.userTwo.username,
+						avatarUrl: data.userTwo.avatarUrl,
+						gamesWon: data.userTwo.gamesWon,
+						gamesLost: data.userTwo.gamesLost,
+						totalGames: data.userTwo.gamesPlayed,
+					});
+				} else if (data.userTwoId === validatedId) {
+					formattedFriends.push({
+						userId: data.userOneId,
+						username: data.userOne.username,
+						avatarUrl: data.userOne.avatarUrl,
+						gamesWon: data.userOne.gamesWon,
+						gamesLost: data.userOne.gamesLost,
+						totalGames: data.userOne.gamesPlayed,
+					});
+				}
+			});
+
+			return formattedFriends;
 		} catch (error) {
 			throw new HttpException(
 				{
