@@ -51,14 +51,6 @@ export class PlaygroundsController {
 		name: 'radius',
 		type: number,
 	})
-	@ApiBody({
-		schema: {
-			example: {
-				latitude: 48.009819,
-				longitude: 45.8766,
-			},
-		},
-	})
 	@Get('playground-in-radius/:radius')
 	async findPlaygroundInRadius(
 		@Param('radius') radius: number,

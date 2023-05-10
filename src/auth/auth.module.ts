@@ -10,10 +10,10 @@ import { APP_GUARD } from '@nestjs/core';
 	controllers: [AuthController],
 	providers: [
 		SupabaseStrategy,
-		/*{
+		{
 			provide: APP_GUARD,
 			useClass: SupabaseAuthGuard,
-		}*/
+		}
 	],
 })
 export class AuthModule {}

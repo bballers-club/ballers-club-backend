@@ -9,6 +9,7 @@ import { PlaygroundsModule } from './playgrounds/playgrounds.module';
 import { FriendshipModule } from './friendship/friendship.module';
 import { PlaygroundRequestModule } from './playground_request/playground_request.module';
 import { FriendshipRequestModule } from './friendship_request/friendship_request.module';
+import { UserFavoritePlaygroundModule } from './user-favorite-playground/user-favorite-playground.module';
 
 @Module({
 	imports: [
@@ -20,6 +21,7 @@ import { FriendshipRequestModule } from './friendship_request/friendship_request
 		FriendshipModule,
 		PlaygroundRequestModule,
 		FriendshipRequestModule,
+		UserFavoritePlaygroundModule,
 	],
 	controllers: [AppController],
 	providers: [AppService],
