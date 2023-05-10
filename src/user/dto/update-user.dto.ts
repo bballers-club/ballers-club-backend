@@ -6,4 +6,10 @@ export class UpdateUserDto {
 		nullable: true,
 	})
 	username?: string;
+
+	@ApiProperty({
+		description : 'Avatar of the user',
+		nullable : true
+	})
+	avatarUrl ?: string;
 }
