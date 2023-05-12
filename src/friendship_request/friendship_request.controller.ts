@@ -2,7 +2,7 @@ import { Controller, Get, Post, Body, Delete, Param, Query } from '@nestjs/commo
 import { FriendshipRequestService } from './providers/friendship_request.service';
 import { CreateFriendshipRequestDto } from './dto/create-friendship_request.dto';
 import { FriendshipRequestDto } from './dto/friendship_request.dto';
-import { ApiBody, ApiQuery, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ApiBody, ApiParam, ApiQuery, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { OneFriendshipRequestDto } from './dto/one-friendship-request.dto';
 import { FriendshipDto } from 'src/friendship/dto/friendship.dto';
 import * as request from 'supertest';
@@ -87,5 +87,15 @@ export class FriendshipRequestController {
 			requestSenderId,
 			requestReceiverId,
 		);
+	}
+
+	@ApiParam({
+		name : "userId",
+		description : "Id of the user which we have to find the requests on",
+		type : String
+	})
+	@Get("request-count/:userId")
+	async findFriendshipRequestCountOfUser(@Param("userId") userId : string) : Promise<Number> {
+		return await this.friendshipRequestService.findFriendshipRequestNumberOfUser(userId)
 	}
 }

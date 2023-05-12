@@ -255,4 +255,26 @@ export class FriendshipRequestService {
 			);
 		}
 	}
+
+	async findFriendshipRequestNumberOfUser(receiverId : string) : Promise<Number> {
+		try{
+			const validatedId = z.string().uuid().parse(receiverId)
+
+			return await this.friendshipRequestRepository.countBy({
+				requestReceiverId : validatedId
+			});
+		}
+		catch (error) {
+			throw new HttpException(
+				{
+					status: HttpStatus.BAD_REQUEST,
+					error: `Invalid parameter : ${error.message}`,
+				},
+				HttpStatus.BAD_REQUEST,
+				{
+					cause: error,
+				},
+			);
+		}
+	}
 }

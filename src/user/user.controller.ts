@@ -16,12 +16,12 @@ import { ApiTags, ApiResponse, ApiParam } from '@nestjs/swagger';
 import { UserDto } from './dto/user.dto';
 import { ResearchUserDto } from './dto/research-user-dto';
 
+@ApiTags('user')
 @Controller('user')
 export class UserController {
 	constructor(private readonly userService: UserService) {}
 
 	@SkipAuth()
-	@ApiTags('user')
 	@ApiResponse({
 		status: 200,
 		type: UserDto,
@@ -31,7 +31,6 @@ export class UserController {
 		return this.userService.findAll();
 	}
 
-	@ApiTags('user')
 	@ApiResponse({
 		status: 200,
 		type: UserDto,
@@ -42,7 +41,6 @@ export class UserController {
 	}
 
 	@SkipAuth()
-	@ApiTags('user')
 	@ApiResponse({
 		status: 201,
 		type: UserDto,
@@ -52,7 +50,6 @@ export class UserController {
 		return this.userService.create(user);
 	}
 
-	@ApiTags('user')
 	@ApiResponse({
 		status: 200,
 		type: UserDto,
@@ -65,13 +62,11 @@ export class UserController {
 		return this.userService.update(id, user);
 	}
 
-	@ApiTags('user')
 	@Delete(':id')
 	async deleteUser(@Param('id') id: string): Promise<void> {
 		this.userService.delete(id);
 	}
 
-	@ApiTags('user')
 	@ApiParam({
 		name : "researchValue",
 		description : "String to check"
@@ -80,4 +75,5 @@ export class UserController {
 	async findUsersByUsername(@Param('researchValue') researchValue : string) : Promise<ResearchUserDto[]> {
 		return await this.userService.findUsersByName(researchValue)
 	}
+
 }
