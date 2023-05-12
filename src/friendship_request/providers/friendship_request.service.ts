@@ -9,6 +9,7 @@ import { FriendshipRequest } from '../entity/friendship_request.entity';
 import { Repository } from 'typeorm';
 import { z } from 'zod';
 import { Friendship } from 'src/friendship/entity/friendship.entity';
+import { OneFriendshipRequestDto } from '../dto/one-friendship-request.dto';
 
 @Injectable()
 export class FriendshipRequestService {
@@ -24,15 +25,32 @@ export class FriendshipRequestService {
 		requestReceiverId: z.string().uuid(),
 	});
 
-	async getFriendshipRequestOfUser(id : string) : Promise<FriendshipRequest[]> {
+	async getFriendshipRequestOfUser(id : string) : Promise<OneFriendshipRequestDto[]> {
 		try {
 			const validatedId = z.string().uuid().parse(id);
 
-			return await this.friendshipRequestRepository.find({
+			const userFriendshipsRequest = await this.friendshipRequestRepository.find({
 				where : {
 					requestReceiverId : validatedId
+				},
+				relations : {
+					requestSender : true
 				}
 			});
+			const requests : OneFriendshipRequestDto[] = []
+
+			if(userFriendshipsRequest.length > 0){
+				userFriendshipsRequest.forEach((request) => {
+					requests.push({
+						requestSenderId : request.requestSenderId,
+						requestReceiverId : request.requestReceiverId,
+						requesterUsername : request.requestSender.username
+					})
+				})
+			}
+
+			return requests;
+
 		} catch (error) {
 			throw new HttpException(
 				{
