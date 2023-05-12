@@ -1,5 +1,5 @@
 import { Injectable, Inject, HttpException, HttpStatus } from '@nestjs/common';
-import { Repository, Like } from 'typeorm';
+import { Repository,ILike } from 'typeorm';
 import { User } from '../entity/user.entity';
 import { z } from 'zod';
 
@@ -146,7 +146,7 @@ export class UserService {
 					
 				},
 				where : {
-					username : Like(`%${validatedResearchValue}%`)
+					username : ILike(`%${validatedResearchValue}%`)
 				},
 			});
 
