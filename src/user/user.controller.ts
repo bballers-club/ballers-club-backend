@@ -12,8 +12,9 @@ import { User } from './entity/user.entity';
 import { SkipAuth } from 'src/decorators/skip_auth.decorator';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { ApiTags, ApiResponse } from '@nestjs/swagger';
+import { ApiTags, ApiResponse, ApiParam } from '@nestjs/swagger';
 import { UserDto } from './dto/user.dto';
+import { ResearchUserDto } from './dto/research-user-dto';
 
 @Controller('user')
 export class UserController {
@@ -68,5 +69,15 @@ export class UserController {
 	@Delete(':id')
 	async deleteUser(@Param('id') id: string): Promise<void> {
 		this.userService.delete(id);
+	}
+
+	@ApiTags('user')
+	@ApiParam({
+		name : "researchValue",
+		description : "String to check"
+	})
+	@Get(':researchValue')
+	async findUsersByUsername(@Param('researchValue') researchValue : string) : Promise<ResearchUserDto[]> {
+		return await this.userService.findUsersByName(researchValue)
 	}
 }

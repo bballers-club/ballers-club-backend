@@ -1,5 +1,5 @@
 import { Injectable, Inject, HttpException, HttpStatus } from '@nestjs/common';
-import { Repository } from 'typeorm';
+import { Repository, Like } from 'typeorm';
 import { User } from '../entity/user.entity';
 import { z } from 'zod';
 
@@ -121,6 +121,35 @@ export class UserService {
 			});
 
 			return await this.findOneById(id);
+		} catch (error) {
+			throw new HttpException(
+				{
+					status: HttpStatus.BAD_REQUEST,
+					error: `Invalid parameter : ${error.message}`,
+				},
+				HttpStatus.BAD_REQUEST,
+				{
+					cause: error,
+				},
+			);
+		}
+	}
+
+	async findUsersByName(researchValue : string) : Promise<{id : string, username : string}[]> {
+		try {
+			const validatedResearchValue = z.string().parse(researchValue)
+
+			return await this.userRepository.find({
+				select : {
+					username : true,
+					id : true
+					
+				},
+				where : {
+					username : Like(`%${validatedResearchValue}`)
+				},
+			});
+
 		} catch (error) {
 			throw new HttpException(
 				{

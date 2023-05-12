@@ -1,8 +1,8 @@
-import { Controller, Get, Post, Body, Delete, Param } from '@nestjs/common';
+import { Controller, Get, Post, Body, Delete, Param, Query } from '@nestjs/common';
 import { FriendshipRequestService } from './providers/friendship_request.service';
 import { CreateFriendshipRequestDto } from './dto/create-friendship_request.dto';
 import { FriendshipRequestDto } from './dto/friendship_request.dto';
-import { ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ApiQuery, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { OneFriendshipRequestDto } from './dto/one-friendship-request.dto';
 import { FriendshipDto } from 'src/friendship/dto/friendship.dto';
 
@@ -55,10 +55,13 @@ export class FriendshipRequestController {
 		status: 200,
 		description: 'Friendship request canceled / denied successfully',
 	})
+	@ApiQuery({
+		example : "friendship-request?requestSenderId=:senderId&requestReceiverId=:receiverId"
+	})
 	@Delete()
 	async removeFriendshipRequest(
-		@Body('requestReceiverId') requestSenderId: string,
-		@Body('requestReceiverId') requestReceiverId: string,
+		@Query('requestSenderId') requestSenderId: string,
+		@Query('requestReceiverId') requestReceiverId: string,
 	) {
 		return await this.friendshipRequestService.removeFriendshipRequest(
 			requestSenderId,
