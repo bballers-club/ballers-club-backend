@@ -184,7 +184,7 @@ export class FriendshipRequestService {
 				userTwoId : validatedFriendshipObject.userTwoId
 			})
 
-			await this.removeFriendshipRequest(validatedFriendshipObject.userTwoId, validatedFriendshipObject.userOneId);
+			await this.removeFriendshipRequest(validatedFriendshipObject.userOneId, validatedFriendshipObject.userTwoId);
 
 			return createdFriendship
 			
