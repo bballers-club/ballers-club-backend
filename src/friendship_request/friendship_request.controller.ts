@@ -46,8 +46,8 @@ export class FriendshipRequestController {
 	}
 
 	@Post('validate-friendship')
-	async validateFriendshipRequest(@Body("requestSenderId") requestSenderId : string, @Body("requestReceiverId") requestReceiverId : string) : Promise<FriendshipDto> {
-		return await this.validateFriendshipRequest(requestSenderId,requestReceiverId)
+	async validateFriendshipRequest(@Body("requestSenderId") userOneId : string, @Body("requestReceiverId") userTwoId : string) : Promise<FriendshipDto> {
+		return await this.validateFriendshipRequest(userOneId,userTwoId)
 	}
 
 	@ApiTags('friendship-request')
