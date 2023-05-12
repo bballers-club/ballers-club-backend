@@ -2,11 +2,12 @@ import { Controller, Get, Post, Body, Delete, Param, Query } from '@nestjs/commo
 import { FriendshipRequestService } from './providers/friendship_request.service';
 import { CreateFriendshipRequestDto } from './dto/create-friendship_request.dto';
 import { FriendshipRequestDto } from './dto/friendship_request.dto';
-import { ApiQuery, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ApiBody, ApiQuery, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { OneFriendshipRequestDto } from './dto/one-friendship-request.dto';
 import { FriendshipDto } from 'src/friendship/dto/friendship.dto';
+import * as request from 'supertest';
 
-
+@ApiTags('friendship-request')
 @Controller('friendship-request')
 export class FriendshipRequestController {
 	constructor(
@@ -45,9 +46,28 @@ export class FriendshipRequestController {
 		return await this.friendshipRequestService.getFriendshipRequestOfUser(id)
 	}
 
+	@ApiBody({
+		type: String,
+		description : "Body containing requestSenderId and requestReceiverId",
+		examples : {
+			requestSenderId : {
+				description : "Id of the sender",
+				value : "36c1351b-72d9-4681-9e9d-3593c9216729"
+			},
+			requestReceiverId : {
+				description : "Id of the receiver",
+				value : "4990afd5-9f9c-4f33-a9d9-1dbadd23bd78"
+			}
+
+		}
+	})
 	@Post('validate-friendship')
-	async validateFriendshipRequest(@Body("requestSenderId") userOneId : string, @Body("requestReceiverId") userTwoId : string) : Promise<FriendshipDto> {
-		return await this.validateFriendshipRequest(userOneId,userTwoId)
+	async validateFriendshipRequest(@Body("senderId") userOneId : string, @Body("receiverId") userTwoId : string) : Promise<FriendshipDto> {
+		
+		return await this.friendshipRequestService.validateFriendshipRequest({
+			userOneId : userOneId,
+			userTwoId : userTwoId
+		})
 	}
 
 	@ApiTags('friendship-request')
