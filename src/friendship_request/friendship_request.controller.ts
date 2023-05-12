@@ -38,8 +38,8 @@ export class FriendshipRequestController {
 	}
 
 	@ApiTags('friendship-request')
-	@Post()
-	async findRequestedFriendshipsOfUser(@Param("receiverId") id : string) : Promise<FriendshipRequestDto[]> {
+	@Get(':id')
+	async findRequestedFriendshipsOfUser(@Param("id") id : string) : Promise<FriendshipRequestDto[]> {
 		return await this.friendshipRequestService.getFriendshipRequestOfUser(id)
 	}
 
