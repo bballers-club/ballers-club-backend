@@ -10,6 +10,7 @@ import { Repository } from 'typeorm';
 import { z } from 'zod';
 import { Friendship } from 'src/friendship/entity/friendship.entity';
 import { OneFriendshipRequestDto } from '../dto/one-friendship-request.dto';
+import { FriendshipService } from 'src/friendship/providers/friendship.service';
 
 @Injectable()
 export class FriendshipRequestService {
@@ -18,6 +19,8 @@ export class FriendshipRequestService {
 		private friendshipRequestRepository: Repository<FriendshipRequest>,
 		@Inject('FRIENDSHIP_REPOSITORY')
 		private friendshipRepository: Repository<Friendship>,
+		@Inject(FriendshipService)
+		private readonly friendshipService : FriendshipService
 	) {}
 
 	private friendshipRequestValidator = z.object({
@@ -140,6 +143,51 @@ export class FriendshipRequestService {
 				requestSenderId: validatedFriendshipRequest.requestSenderId,
 				requestReceiverId: validatedFriendshipRequest.requestReceiverId,
 			});
+		} catch (error) {
+			throw new HttpException(
+				{
+					status: HttpStatus.BAD_REQUEST,
+					error: `Invalid parameter : ${error.message}`,
+				},
+				HttpStatus.BAD_REQUEST,
+				{
+					cause: error,
+				},
+			);
+		}
+	}
+
+	async validateFriendshipRequest(friendship : {
+		userOneId : string,
+		userTwoId : string
+	}) : Promise<Friendship> {
+		try {
+
+			
+			
+			const validatedFriendshipObject = z.object({
+				userOneId : z.string().uuid(),
+				userTwoId : z.string().uuid()
+			}).strict().parse(friendship);
+
+			const friendshipExist = await this.friendshipService.verifyIfFriendshipExist({
+				userOneId : validatedFriendshipObject.userOneId,
+				userTwoId : validatedFriendshipObject.userTwoId
+			})
+
+			if(friendshipExist){
+				throw new Error("Friendship already existing")
+			}
+
+			const createdFriendship = await this.friendshipService.create({
+				userOneId : validatedFriendshipObject.userOneId,
+				userTwoId : validatedFriendshipObject.userTwoId
+			})
+
+			await this.removeFriendshipRequest(validatedFriendshipObject.userTwoId, validatedFriendshipObject.userOneId);
+
+			return createdFriendship
+			
 		} catch (error) {
 			throw new HttpException(
 				{

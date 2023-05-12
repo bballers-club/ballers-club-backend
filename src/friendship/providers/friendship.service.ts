@@ -90,7 +90,7 @@ export class FriendshipService {
 	}): Promise<Friendship> {
 		try {
 			const validatedFriendship =
-				this.friendshipObjectValidator.parse(friendship);
+				this.friendshipObjectValidator.strict().parse(friendship);
 			await this.friendshipRepository.create({
 				...validatedFriendship,
 			});
@@ -141,4 +141,40 @@ export class FriendshipService {
 			);
 		}
 	}
+
+	async verifyIfFriendshipExist(friendship : {
+		userOneId : string;
+		userTwoId : string
+	}) : Promise<Boolean> {
+		try {
+			const validatedFriendshipObject = this.friendshipObjectValidator.parse(friendship)
+
+			const friendshipExistFirstCheck =
+				await this.friendshipRepository.findBy({
+					userOneId: validatedFriendshipObject.userOneId,
+					userTwoId: validatedFriendshipObject.userTwoId,
+				});
+
+			const friendshipExistSecondCheck =
+				await this.friendshipRepository.findBy({
+					userOneId: validatedFriendshipObject.userTwoId,
+					userTwoId: validatedFriendshipObject.userOneId,
+				});
+
+			return (friendshipExistFirstCheck.length > 0 && friendshipExistSecondCheck.length > 0)
+
+		} catch (error) {
+			throw new HttpException(
+				{
+					status: HttpStatus.BAD_REQUEST,
+					error: `Invalid parameter : ${error.message}`,
+				},
+				HttpStatus.BAD_REQUEST,
+				{
+					cause: error,
+				},
+			);
+		}
+	}
 }
+

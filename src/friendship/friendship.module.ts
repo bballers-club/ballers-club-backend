@@ -8,5 +8,6 @@ import { DatabaseModule } from '../supabase_database/supabase_database.module';
 	imports: [DatabaseModule],
 	controllers: [FriendshipController],
 	providers: [...friendshipProvider, FriendshipService],
+	exports : [FriendshipService,...friendshipProvider]
 })
 export class FriendshipModule {}
