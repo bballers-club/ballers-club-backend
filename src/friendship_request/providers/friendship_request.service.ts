@@ -24,6 +24,29 @@ export class FriendshipRequestService {
 		requestReceiverId: z.string().uuid(),
 	});
 
+	async getFriendshipRequestOfUser(id : string) : Promise<FriendshipRequest[]> {
+		try {
+			const validatedId = z.string().uuid().parse(id);
+
+			return await this.friendshipRequestRepository.find({
+				where : {
+					requestReceiverId : validatedId
+				}
+			});
+		} catch (error) {
+			throw new HttpException(
+				{
+					status: HttpStatus.BAD_REQUEST,
+					error: `Invalid parameter : ${error.message}`,
+				},
+				HttpStatus.BAD_REQUEST,
+				{
+					cause: error,
+				},
+			);
+		}
+	}
+
 	async create(createFriendshipRequest: {
 		requestSenderId: string;
 		requestReceiverId: string;

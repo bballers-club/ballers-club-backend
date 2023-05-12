@@ -1,8 +1,9 @@
-import { Controller, Get, Post, Body, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Delete, Param } from '@nestjs/common';
 import { FriendshipRequestService } from './providers/friendship_request.service';
 import { CreateFriendshipRequestDto } from './dto/create-friendship_request.dto';
 import { FriendshipRequestDto } from './dto/friendship_request.dto';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
+
 
 @Controller('friendship-request')
 export class FriendshipRequestController {
@@ -34,6 +35,12 @@ export class FriendshipRequestController {
 	@Get()
 	async findAll(): Promise<FriendshipRequestDto[]> {
 		return await this.friendshipRequestService.findAll();
+	}
+
+	@ApiTags('friendship-request')
+	@Post()
+	async findRequestedFriendshipsOfUser(@Param("receiverId") id : string) : Promise<FriendshipRequestDto[]> {
+		return await this.friendshipRequestService.getFriendshipRequestOfUser(id)
 	}
 
 	@ApiTags('friendship-request')
