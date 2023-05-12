@@ -146,7 +146,7 @@ export class UserService {
 					
 				},
 				where : {
-					username : Like(`%${validatedResearchValue}`)
+					username : Like(`%${validatedResearchValue}%`)
 				},
 			});
 

@@ -76,7 +76,7 @@ export class UserController {
 		name : "researchValue",
 		description : "String to check"
 	})
-	@Get(':researchValue')
+	@Get('by-username/:researchValue')
 	async findUsersByUsername(@Param('researchValue') researchValue : string) : Promise<ResearchUserDto[]> {
 		return await this.userService.findUsersByName(researchValue)
 	}
