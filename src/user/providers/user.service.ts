@@ -14,10 +14,16 @@ export class UserService {
 		.object({
 			id: z.string().uuid(),
 			username: z.string(),
+			avatarUrl: z.string(),
+			position: z.string(),
+			level: z.string(),
 		})
 		.partial({
 			id: true,
 			username: true,
+			avatarUrl: true,
+			position: true,
+			level: true,
 		});
 
 	async findAll(): Promise<User[]> {
@@ -63,7 +69,7 @@ export class UserService {
 		username: string;
 		level: string;
 		position: string;
-		avatarUrl: string;
+		avatarUrl?: string;
 	}): Promise<User> {
 		try {
 			const validatedUserObjectWithoutId =

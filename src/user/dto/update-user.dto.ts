@@ -8,8 +8,20 @@ export class UpdateUserDto {
 	username?: string;
 
 	@ApiProperty({
-		description : 'Avatar of the user',
-		nullable : true
+		description: 'Avatar of the user',
+		nullable: true,
 	})
-	avatarUrl ?: string;
+	avatarUrl?: string;
+
+	@ApiProperty({
+		description: 'Level of the user',
+		nullable: true,
+	})
+	level?: string;
+
+	@ApiProperty({
+		description: 'Position mostly played by the user',
+		nullable: true,
+	})
+	position?: string;
 }
