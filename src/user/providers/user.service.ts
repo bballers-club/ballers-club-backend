@@ -1,5 +1,5 @@
 import { Injectable, Inject, HttpException, HttpStatus } from '@nestjs/common';
-import { Repository,ILike } from 'typeorm';
+import { Repository, ILike } from 'typeorm';
 import { User } from '../entity/user.entity';
 import { z } from 'zod';
 
@@ -59,11 +59,11 @@ export class UserService {
 	}
 
 	async create(user: {
-		id: string,
-		username: string,
-		level: string,
-		position: string,
-		avatarUrl: string,
+		id: string;
+		username: string;
+		level: string;
+		position: string;
+		avatarUrl: string;
 	}): Promise<User> {
 		try {
 			const validatedUserObjectWithoutId =
@@ -92,7 +92,7 @@ export class UserService {
 		try {
 			const validatedId = z.string().uuid().parse(id);
 
-			this.userRepository.delete(validatedId);
+			await this.userRepository.delete(validatedId);
 		} catch (error) {
 			throw new HttpException(
 				{
@@ -111,6 +111,7 @@ export class UserService {
 		id: string,
 		user: {
 			username?: string;
+			avatarUrl?: string;
 		},
 	): Promise<User> {
 		try {
@@ -135,21 +136,21 @@ export class UserService {
 		}
 	}
 
-	async findUsersByName(researchValue : string) : Promise<{id : string, username : string}[]> {
+	async findUsersByName(
+		researchValue: string,
+	): Promise<{ id: string; username: string }[]> {
 		try {
-			const validatedResearchValue = z.string().parse(researchValue)
+			const validatedResearchValue = z.string().parse(researchValue);
 
 			return await this.userRepository.find({
-				select : {
-					username : true,
-					id : true
-					
+				select: {
+					username: true,
+					id: true,
 				},
-				where : {
-					username : ILike(`%${validatedResearchValue}%`)
+				where: {
+					username: ILike(`%${validatedResearchValue}%`),
 				},
 			});
-
 		} catch (error) {
 			throw new HttpException(
 				{
