@@ -7,6 +7,10 @@ import { z } from 'zod';
 export class PlaygroundsService {
 	private playgroundObjectValidator = z.object({
 		name: z.string(),
+		address: z.string(),
+		country: z.string(),
+		city: z.string(),
+		zipcode: z.number(),
 		latitude: z.number(),
 		longitude: z.number(),
 	});
@@ -54,7 +58,10 @@ export class PlaygroundsService {
 	}
 	async create(playground: {
 		name: string;
-		address?: string;
+		address: string;
+		country: string;
+		city: string;
+		zipcode: number;
 		latitude: number;
 		longitude: number;
 	}): Promise<Playground> {
@@ -85,6 +92,9 @@ export class PlaygroundsService {
 		playground: {
 			name?: string;
 			address?: string;
+			country?: string;
+			city?: string;
+			zipcode?: number;
 			latitude?: number;
 			longitude?: number;
 		},
@@ -179,7 +189,7 @@ export class PlaygroundsService {
 		longitude2: number,
 	): number {
 		let dist = 1;
-		const validatedLatitude1 = latitude1
+		const validatedLatitude1 = latitude1;
 		const validatedLongitude1 = longitude2;
 		const validatedLatitude2 = z.number().parse(latitude2);
 		const validatedLongitude2 = z.number().parse(longitude2);

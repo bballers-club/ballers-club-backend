@@ -20,6 +20,21 @@ export class PlaygroundRequest {
 
 	@Column()
 	address: string;
+	@Column({
+		nullable: false,
+	})
+	city: string;
+
+	@Column({
+		nullable: false,
+	})
+	country: string;
+
+	@Column({
+		nullable: false,
+		type: 'bigint',
+	})
+	zipcode: number;
 
 	@Column({
 		type: 'double precision',

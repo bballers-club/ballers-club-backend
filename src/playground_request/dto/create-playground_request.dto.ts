@@ -18,6 +18,24 @@ export class CreatePlaygroundRequestDto {
 	address: string;
 
 	@ApiProperty({
+		description: 'City where the playground is located',
+		type: String,
+	})
+	city: string;
+
+	@ApiProperty({
+		description: 'Country where the playground is located',
+		type: String,
+	})
+	country: string;
+
+	@ApiProperty({
+		description: 'Zipcode of the city',
+		type: BigInt,
+	})
+	zipcode: number;
+
+	@ApiProperty({
 		type: Number,
 	})
 	latitude: number;
