@@ -29,7 +29,7 @@ export class PlaygroundDto {
 	@ApiProperty({
 		description: 'Zipcode of the city',
 	})
-	zipcode: number;
+	zipcode: string;
 
 	@ApiProperty({
 		description: 'Latitude of the playground',

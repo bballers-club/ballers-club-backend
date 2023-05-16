@@ -25,9 +25,8 @@ export class Playground {
 
 	@Column({
 		nullable: false,
-		type: 'bigint',
 	})
-	zipcode: number;
+	zipcode: string;
 
 	@Column({
 		type: 'double precision',

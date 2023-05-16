@@ -17,6 +17,9 @@ export class PlaygroundRequestService {
 		userId: z.string().uuid(),
 		name: z.string(),
 		address: z.string(),
+		city: z.string(),
+		country: z.string(),
+		zipcode: z.string(),
 		latitude: z.number(),
 		longitude: z.number(),
 	});
@@ -25,6 +28,9 @@ export class PlaygroundRequestService {
 		userId: string;
 		name: string;
 		address: string;
+		city: string;
+		zipcode: string;
+		country: string;
 		latitude: number;
 		longitude: number;
 	}): Promise<PlaygroundRequest> {

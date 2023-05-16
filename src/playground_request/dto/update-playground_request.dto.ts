@@ -34,9 +34,9 @@ export class UpdatePlaygroundRequestDto extends PartialType(
 
 	@ApiProperty({
 		description: 'Zipcode of the city',
-		type: BigInt,
+		type: String,
 	})
-	zipcode?: number;
+	zipcode?: string;
 
 	@ApiProperty({
 		type: 'double',

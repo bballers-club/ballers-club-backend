@@ -37,9 +37,9 @@ export class PlaygroundRequestDto {
 
 	@ApiProperty({
 		description: 'Zipcode of the city',
-		type: BigInt,
+		type: String,
 	})
-	zipcode: number;
+	zipcode: string;
 
 	@ApiProperty({
 		type: 'double',

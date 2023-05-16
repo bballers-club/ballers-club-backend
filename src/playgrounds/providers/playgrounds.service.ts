@@ -10,7 +10,7 @@ export class PlaygroundsService {
 		address: z.string(),
 		country: z.string(),
 		city: z.string(),
-		zipcode: z.number(),
+		zipcode: z.string(),
 		latitude: z.number(),
 		longitude: z.number(),
 	});
@@ -61,7 +61,7 @@ export class PlaygroundsService {
 		address: string;
 		country: string;
 		city: string;
-		zipcode: number;
+		zipcode: string;
 		latitude: number;
 		longitude: number;
 	}): Promise<Playground> {
@@ -94,7 +94,7 @@ export class PlaygroundsService {
 			address?: string;
 			country?: string;
 			city?: string;
-			zipcode?: number;
+			zipcode?: string;
 			latitude?: number;
 			longitude?: number;
 		},
