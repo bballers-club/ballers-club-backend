@@ -165,9 +165,9 @@ export class PlaygroundsService {
 						playgroundsInRadius.push(playground);
 					}
 				});
-
-				return playgroundsInRadius;
 			}
+
+			return playgroundsInRadius;
 		} catch (error) {
 			throw new HttpException(
 				{
