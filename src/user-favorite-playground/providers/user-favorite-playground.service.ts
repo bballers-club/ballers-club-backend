@@ -46,9 +46,12 @@ export class UserFavoritePlaygroundService {
       const validatedUserId = z.string().uuid().parse(userId)
 
       return await this.userFavoritePlaygroundRepository.find({
+        relations: {
+          playground : true
+        },
         where : {
           userId : validatedUserId
-        }
+        },
       });
 
     }

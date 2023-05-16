@@ -22,7 +22,12 @@ export class UserFavoritePlaygroundController {
 
   @Get(':id')
   async findUserFavorites(@Param('id') userId: string) : Promise<UserFavoritePlayground[]>{
-    return await this.userFavoritePlaygroundService.findAllFavoriteOfUser(userId);
+    const favorites =  await this.userFavoritePlaygroundService.findAllFavoriteOfUser(userId);
+    let playgrounds = [];
+    for(let i = 0; i < favorites.length; i++){
+      playgrounds.push(favorites[i].playground);
+    }
+    return playgrounds;
   }
 
   @ApiQuery({
