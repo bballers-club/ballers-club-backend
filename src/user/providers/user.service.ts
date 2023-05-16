@@ -151,6 +151,7 @@ export class UserService {
 			return await this.userRepository.find({
 				select: {
 					username: true,
+					avatarUrl: true,
 					id: true,
 				},
 				where: {
