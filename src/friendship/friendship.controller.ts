@@ -27,7 +27,7 @@ export class FriendshipController {
 	})
 	@ApiTags('friendship')
 	@Get(':id')
-	async findFriendshipsOfUser(@Param('id') id: string, @Query('query') query: string, @Query('pageSize') page: number, @Query('size') size: number ): Promise<{
+	async findFriendshipsOfUser(@Param('id') id: string, @Query('query') query: string, @Query('page') page: number, @Query('pageSize') size: number ): Promise<{
 		friendsInformations: OneUserFriendshipDTO[];
 		totalFriendship: number;
 	}> {
