@@ -35,10 +35,14 @@ export class FriendshipService {
 	async findAllFriendshipOfOneUser(
 		currentUser: string,
 		query: string,
+		page: number,
+		size: number,
 	): Promise<OneUserFriendshipDTO[]> {
 		try {
 			const validatedId = z.string().uuid().parse(currentUser);
 			const validatedQuery = z.string().parse(query);
+			const validatedPage = z.number().int().positive().parse(page);
+			const validatedSize = z.number().int().positive().parse(size);
 			const foundFriends = await this.friendshipRepository.find({
 				where: [
 					{
@@ -54,6 +58,8 @@ export class FriendshipService {
 						},
 					},
 					],
+				skip: (validatedPage - 1) * validatedSize,
+				take: validatedSize,
 				relations: {
 					userOne: true,
 					userTwo: true,
