@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Post, Delete } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Delete, Query } from '@nestjs/common';
 import { FriendshipService } from './providers/friendship.service';
 import { Friendship } from './entity/friendship.entity';
 import { CreateFriendshipDto } from './dto/create-friendship.dto';
@@ -27,12 +27,12 @@ export class FriendshipController {
 	})
 	@ApiTags('friendship')
 	@Get(':id')
-	async findFriendshipsOfUser(@Param('id') id: string): Promise<{
+	async findFriendshipsOfUser(@Param('id') id: string, @Query('query') query: string): Promise<{
 		friendsInformations: OneUserFriendshipDTO[];
 		totalFriendship: number;
 	}> {
 		const friendships =
-			await this.friendshipService.findAllFriendshipOfOneUser(id);
+			await this.friendshipService.findAllFriendshipOfOneUser(id, query);
 		return {
 			friendsInformations: friendships,
 			totalFriendship: friendships.length,
