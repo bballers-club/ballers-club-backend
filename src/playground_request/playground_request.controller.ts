@@ -42,10 +42,10 @@ export class PlaygroundRequestController {
 		let parsedPage = 1;
 		let parsedSize = 10;
 		if (page) {
-			parsedPage = page
+			parsedPage = Number(page);
 		}
 		if (size) {
-			parsedSize = size;
+			parsedSize = Number(size);
 		}
 		return await this.playgroundRequestService.findAll(
 			query,
