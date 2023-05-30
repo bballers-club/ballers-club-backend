@@ -1,5 +1,6 @@
-import { Column, CreateDateColumn, Entity, OneToMany, PrimaryColumn, PrimaryGeneratedColumn } from "typeorm";
+import { Column, CreateDateColumn, Entity, ManyToOne, OneToMany, PrimaryColumn, PrimaryGeneratedColumn } from "typeorm";
 import { User } from '../../user/entity/user.entity';
+import { EventType } from "src/event_type/entity/event_type.entity";
 
 @Entity()
 export class Event {
@@ -9,8 +10,11 @@ export class Event {
     @PrimaryColumn("uuid")
     organizerId : string
 
-    @OneToMany(() => User, user => user.id)
+    @ManyToOne(() => User, user => user.event)
     organizer : User
+
+    @ManyToOne(() => EventType, event_type => event_type.id)
+    type : EventType
 
     @Column()
     eventName : string

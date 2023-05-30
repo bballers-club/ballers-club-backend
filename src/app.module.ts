@@ -11,6 +11,7 @@ import { PlaygroundRequestModule } from './playground_request/playground_request
 import { FriendshipRequestModule } from './friendship_request/friendship_request.module';
 import { UserFavoritePlaygroundModule } from './user-favorite-playground/user-favorite-playground.module';
 import { EventModule } from './event/event.module';
+import { EventTypeModule } from './event_type/event_type.module';
 
 @Module({
 	imports: [
@@ -24,6 +25,7 @@ import { EventModule } from './event/event.module';
 		FriendshipRequestModule,
 		UserFavoritePlaygroundModule,
 		EventModule,
+		EventTypeModule
 	],
 	controllers: [AppController],
 	providers: [AppService],
