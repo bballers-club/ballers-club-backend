@@ -91,11 +91,11 @@ export class FriendshipService {
 		try {
 			const validatedFriendship =
 				this.friendshipObjectValidator.strict().parse(friendship);
-			await this.friendshipRepository.create({
+			const friendshipCreated = await this.friendshipRepository.create({
 				...validatedFriendship,
 			});
 
-			return await this.friendshipRepository.save(validatedFriendship);
+			return await this.friendshipRepository.save(friendshipCreated);
 		} catch (error) {
 			throw new HttpException(
 				{
