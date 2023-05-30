@@ -17,6 +17,21 @@ export class PlaygroundDto {
 	address: string;
 
 	@ApiProperty({
+		description: 'City where the playground is located',
+	})
+	city: string;
+
+	@ApiProperty({
+		description: 'Country where the playground is located',
+	})
+	country: string;
+
+	@ApiProperty({
+		description: 'Zipcode of the city',
+	})
+	zipcode: string;
+
+	@ApiProperty({
 		description: 'Latitude of the playground',
 	})
 	latitude: number;

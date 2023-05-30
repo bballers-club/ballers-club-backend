@@ -68,12 +68,13 @@ export class UserController {
 	}
 
 	@ApiParam({
-		name : "researchValue",
-		description : "String to check"
+		name: 'researchValue',
+		description: 'String to check',
 	})
 	@Get('by-username/:researchValue')
-	async findUsersByUsername(@Param('researchValue') researchValue : string) : Promise<ResearchUserDto[]> {
-		return await this.userService.findUsersByName(researchValue)
+	async findUsersByUsername(
+		@Param('researchValue') researchValue: string,
+	): Promise<ResearchUserDto[]> {
+		return await this.userService.findUsersByName(researchValue);
 	}
-
 }

@@ -1,4 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
+import { Column } from 'typeorm';
 
 export class CreatePlaygroundDto {
 	@ApiProperty({
@@ -10,6 +11,21 @@ export class CreatePlaygroundDto {
 		description: 'Address of the playground',
 	})
 	address: string;
+
+	@ApiProperty({
+		description: 'City where the playground is located',
+	})
+	city: string;
+
+	@ApiProperty({
+		description: 'Country where the playground is located',
+	})
+	country: string;
+
+	@ApiProperty({
+		description: 'Zipcode of the city',
+	})
+	zipcode: string;
 
 	@ApiProperty({
 		description: 'Latitude of the playground',

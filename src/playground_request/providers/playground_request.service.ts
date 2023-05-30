@@ -1,6 +1,6 @@
 import { Injectable, Inject, HttpException, HttpStatus } from '@nestjs/common';
 import { PlaygroundRequest } from '../entity/playground_request.entity';
-import { Repository } from 'typeorm';
+import { ILike, Repository } from 'typeorm';
 import { z } from 'zod';
 import { PlaygroundsService } from '../../playgrounds/providers/playgrounds.service';
 
@@ -17,6 +17,9 @@ export class PlaygroundRequestService {
 		userId: z.string().uuid(),
 		name: z.string(),
 		address: z.string(),
+		city: z.string(),
+		country: z.string(),
+		zipcode: z.string(),
 		latitude: z.number(),
 		longitude: z.number(),
 	});
@@ -25,6 +28,9 @@ export class PlaygroundRequestService {
 		userId: string;
 		name: string;
 		address: string;
+		city: string;
+		zipcode: string;
+		country: string;
 		latitude: number;
 		longitude: number;
 	}): Promise<PlaygroundRequest> {
@@ -55,9 +61,25 @@ export class PlaygroundRequestService {
 		}
 	}
 
-	async findAll(): Promise<PlaygroundRequest[]> {
+	async findAll(query: String, page: number, size: number): Promise<PlaygroundRequest[]> {
+		const parsedPage = z.number().int().positive().parse(page);
+		const parsedSize = z.number().int().positive().parse(size);
+		const queryValidated = z.string().parse(query);
 		try {
-			return await this.playgroundRequestRepository.find();
+			const  playgrounds = await this.playgroundRequestRepository.find({
+				where: [
+					{name: ILike(`%${queryValidated}%`)},
+					{country: ILike(`%${queryValidated}%`)},
+					{city: ILike(`%${queryValidated}%`)},
+				],
+				skip: (parsedPage - 1) * parsedSize,
+				take: parsedSize,
+				order: {
+					name: 'ASC',
+				},
+			});
+			console.log(playgrounds);
+			return playgrounds;
 		} catch (error) {
 			throw new HttpException(
 				{
@@ -122,7 +144,11 @@ export class PlaygroundRequestService {
 			const validatedLatitude = z.number().parse(latitude);
 			const validatedLongitude = z.number().parse(longitude);
 
-			const playgroundRequests = await this.findAll();
+			const playgroundRequests = await this.findAll(
+				'',
+				1,
+				Number.MAX_SAFE_INTEGER,
+			);
 			const playgroundsInRadius: PlaygroundRequest[] = [];
 			if (playgroundRequests.length > 0) {
 				playgroundRequests.forEach((playgroundRequest) => {

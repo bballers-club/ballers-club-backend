@@ -38,8 +38,20 @@ export class PlaygroundRequestController {
 		type: PlaygroundRequest,
 	})
 	@Get()
-	async findAll() {
-		return await this.playgroundRequestService.findAll();
+	async findAll(@Query('query') query: string, @Query('page') page: number,@Query('size') size: number) {
+		let parsedPage = 1;
+		let parsedSize = 10;
+		if (page) {
+			parsedPage = Number(page);
+		}
+		if (size) {
+			parsedSize = Number(size);
+		}
+		return await this.playgroundRequestService.findAll(
+			query,
+			parsedPage,
+			parsedSize,
+		);
 	}
 
 	@ApiTags('playground-request')
@@ -64,6 +76,9 @@ export class PlaygroundRequestController {
 		@Param('radius') radius: number,
 		@Query('latitude') latitude: string,
 		@Query('longitude') longitude: string,
+		@Query('query') query: string, 
+		@Query('page') page: number,
+		@Query('size') size: number
 	) {
 		return await this.playgroundRequestService.findPlaygroundRequestsAroundPlayer(
 			Number(radius),

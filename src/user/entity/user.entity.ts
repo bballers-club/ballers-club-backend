@@ -12,7 +12,9 @@ import {
 
 @Entity()
 export class User {
-	@PrimaryColumn('uuid')
+	@PrimaryColumn('uuid', {
+		unique: true,
+	})
 	id: string;
 
 	@Column({ length: 150 })
@@ -41,7 +43,7 @@ export class User {
 	@Column({
 		nullable: true,
 	})
-	avatarUrl: string;
+	avatarUrl?: string;
 
 	@Column({
 		nullable: true,

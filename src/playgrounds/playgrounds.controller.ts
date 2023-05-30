@@ -28,8 +28,20 @@ export class PlaygroundsController {
 	})
 	@SkipAuth()
 	@Get()
-	async findAllPlaygrounds(): Promise<Playground[]> {
-		return this.playgroundsService.findAll();
+	async findAllPlaygrounds(@Query('query') query: string, @Query('page') page: number,@Query('size') size: number): Promise<Playground[]> {
+		let parsedPage = 1;
+		let parsedSize = 10;
+		if (page) {
+			parsedPage = Number(page);
+		}
+		if (size) {
+			parsedSize = Number(size);
+		}
+		return this.playgroundsService.findAll(
+			query,
+			parsedPage,
+			parsedSize,
+		);
 	}
 
 	@ApiTags('playgrounds')

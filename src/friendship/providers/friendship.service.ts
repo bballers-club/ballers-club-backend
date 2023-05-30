@@ -1,6 +1,6 @@
 import { Injectable, Inject, HttpException, HttpStatus } from '@nestjs/common';
 import { Friendship } from '../entity/friendship.entity';
-import { Repository } from 'typeorm';
+import { ILike, Repository } from 'typeorm';
 import { z } from 'zod';
 import { OneUserFriendshipDTO } from '../dto/one-user-friendship.dto';
 
@@ -34,11 +34,32 @@ export class FriendshipService {
 	}
 	async findAllFriendshipOfOneUser(
 		currentUser: string,
+		query: string,
+		page: number,
+		size: number,
 	): Promise<OneUserFriendshipDTO[]> {
 		try {
 			const validatedId = z.string().uuid().parse(currentUser);
+			const validatedQuery = z.string().parse(query);
+			const validatedPage = z.number().int().positive().parse(page);
+			const validatedSize = z.number().int().positive().parse(size);
 			const foundFriends = await this.friendshipRepository.find({
-				where: [{ userOneId: validatedId }, { userTwoId: validatedId }],
+				where: [
+					{
+					 userOneId: validatedId,
+					 userTwo: {
+						 username: ILike(`%${validatedQuery}%`),
+					 }
+					}, 
+					{ 
+						userTwoId: validatedId,
+						userOne: {
+							username: ILike(`%${validatedQuery}%`),
+						},
+					},
+					],
+				skip: (validatedPage - 1) * validatedSize,
+				take: validatedSize,
 				relations: {
 					userOne: true,
 					userTwo: true,
