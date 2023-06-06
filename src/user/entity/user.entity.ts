@@ -11,6 +11,7 @@ import {
 	ManyToOne,
 } from 'typeorm';
 import { Event } from 'src/event/entity/event.entity';
+import { EventParticipant } from 'src/event_participant/entity/event_participant.entity';
 
 @Entity()
 export class User {
@@ -68,6 +69,9 @@ export class User {
 
 	@OneToMany(() => Event, (event) => event.organizer)
 	event: Event[]
+
+	@OneToMany(() => EventParticipant, (event_participant) => event_participant.user)
+	event_participant : EventParticipant[]
 
 	@CreateDateColumn({ type: 'date' })
 	createdAt: Date;
