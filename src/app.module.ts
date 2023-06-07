@@ -14,6 +14,7 @@ import { EventModule } from './event/event.module';
 import { EventTypeModule } from './event_type/event_type.module';
 import { MatchModule } from './match/match.module';
 import { EventParticipantModule } from './event_participant/event_participant.module';
+import { MatchParticipantModule } from './match_participant/match_participant.module';
 
 @Module({
 	imports: [
@@ -29,7 +30,8 @@ import { EventParticipantModule } from './event_participant/event_participant.mo
 		EventModule,
 		EventTypeModule,
 		MatchModule,
-		EventParticipantModule
+		EventParticipantModule,
+		MatchParticipantModule
 	],
 	controllers: [AppController],
 	providers: [AppService],

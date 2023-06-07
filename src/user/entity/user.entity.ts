@@ -3,15 +3,15 @@ import { Friendship } from 'src/friendship/entity/friendship.entity';
 import {
 	Entity,
 	Column,
-	PrimaryGeneratedColumn,
 	CreateDateColumn,
 	ManyToMany,
 	OneToMany,
 	PrimaryColumn,
-	ManyToOne,
 } from 'typeorm';
 import { Event } from 'src/event/entity/event.entity';
 import { EventParticipant } from 'src/event_participant/entity/event_participant.entity';
+import { MatchParticipant } from 'src/match_participant/entities/match_participant.entity';
+
 
 @Entity()
 export class User {
@@ -72,6 +72,9 @@ export class User {
 
 	@OneToMany(() => EventParticipant, (event_participant) => event_participant.user)
 	event_participant : EventParticipant[]
+
+	@OneToMany(() => MatchParticipant, (match_participant) => match_participant.user)
+	match_participant : MatchParticipant[]
 
 	@CreateDateColumn({ type: 'date' })
 	createdAt: Date;
