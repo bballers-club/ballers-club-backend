@@ -2,7 +2,7 @@ import { ApiProperty } from "@nestjs/swagger";
 
 export class MatchParticipantDto {
     @ApiProperty({
-        description : "Id of the match"
+        description : "Id of the current match"
     })
     matchId : string
 
