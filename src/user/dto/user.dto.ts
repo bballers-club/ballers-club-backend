@@ -53,4 +53,10 @@ export class UserDto {
 		description: 'Date when the user created his account',
 	})
 	createdAt: Date;
+
+	@ApiProperty({
+		description : "Role of the user"
+	})
+	role : string;
+	
 }

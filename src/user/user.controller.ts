@@ -77,4 +77,15 @@ export class UserController {
 	): Promise<ResearchUserDto[]> {
 		return await this.userService.findUsersByName(researchValue);
 	}
+
+	@SkipAuth()
+	@Post("from-api")
+	async createUserFromApi(
+	@Body("email") email : string, 
+	@Body("password") password : string, 
+	@Body("level") level : string, 
+	@Body("username") username : string, 
+	@Body("position") position : string) : Promise<CreateUserDto> {
+		return await this.userService.createUserFromApi(email,password,username,level,position);
+	}
 }

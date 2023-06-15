@@ -2,6 +2,7 @@ import { Injectable, Inject, HttpException, HttpStatus } from '@nestjs/common';
 import { Repository, ILike } from 'typeorm';
 import { User } from '../entity/user.entity';
 import { z } from 'zod';
+import { supabaseClient } from 'src/main';
 
 @Injectable()
 export class UserService {
@@ -158,6 +159,37 @@ export class UserService {
 					username: ILike(`%${validatedResearchValue}%`),
 				},
 			});
+		} catch (error) {
+			throw new HttpException(
+				{
+					status: HttpStatus.BAD_REQUEST,
+					error: `Invalid parameter : ${error.message}`,
+				},
+				HttpStatus.BAD_REQUEST,
+				{
+					cause: error,
+				},
+			);
+		}
+	}
+
+	async createUserFromApi(email : string, password : string, username : string, level : string, position : string) : Promise<User> {
+		try {
+			const { data, error } = await supabaseClient.auth.signUp({
+				email: email,
+				password: password,
+			})
+			
+			if(!error){
+
+				return await this.create({
+					id : data.user.id,
+					username : username,
+					level : level,
+					position : position
+				})
+			}
+
 		} catch (error) {
 			throw new HttpException(
 				{
