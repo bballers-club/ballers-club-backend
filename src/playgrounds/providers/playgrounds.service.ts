@@ -210,7 +210,7 @@ export class PlaygroundsService {
 	): number {
 		let dist = 1;
 		const validatedLatitude1 = latitude1;
-		const validatedLongitude1 = longitude2;
+		const validatedLongitude1 = longitude1;
 		const validatedLatitude2 = z.number().parse(latitude2);
 		const validatedLongitude2 = z.number().parse(longitude2);
 

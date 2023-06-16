@@ -9,8 +9,6 @@ config();
 async function bootstrap() {
 	const app = await NestFactory.create(AppModule);
 
-	app.enableCors();
-
 	const swaggerConfig = new DocumentBuilder()
 		.setTitle('Ballers Club API')
 		.setDescription('Welcome to the Ballers Club API documentation')

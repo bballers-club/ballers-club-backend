@@ -56,6 +56,7 @@ export class AuthController {
             }
 
             return {
+                token : data.session.access_token,
                 id : user.id
             };
         }

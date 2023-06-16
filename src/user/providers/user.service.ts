@@ -3,6 +3,7 @@ import { Repository, ILike } from 'typeorm';
 import { User } from '../entity/user.entity';
 import { z } from 'zod';
 import { supabaseClient } from 'src/main';
+import { UserBackofficeDto } from '../dto/user_backoffice.dto';
 
 @Injectable()
 export class UserService {
@@ -195,6 +196,56 @@ export class UserService {
 				{
 					status: HttpStatus.BAD_REQUEST,
 					error: `Invalid parameter : ${error.message}`,
+				},
+				HttpStatus.BAD_REQUEST,
+				{
+					cause: error,
+				},
+			);
+		}
+	}
+
+	async usersForBackOffice() : Promise<{
+		id : string,
+		username : string,
+		email : string,
+		createdAt : string
+	}[]> {
+		try {
+			
+			const { data, error }  = await supabaseClient.auth.admin.listUsers()
+			const dataToReturn : {
+				id : string,
+				username : string,
+				email : string,
+				createdAt : string
+			}[] = []
+
+			if(error){
+				throw new HttpException(error.message,HttpStatus.BAD_REQUEST)
+			}
+			
+			const auth_users = data.users;
+
+			for(const user of auth_users) {
+				const public_user = await this.findOneById(user.id);
+				const createdAt   = public_user.createdAt.toString()
+
+				dataToReturn.push({
+					id : user.id,
+					email : user.email,
+					username : public_user.username,
+					createdAt : createdAt
+				});
+			}			
+			
+			return dataToReturn;
+
+		} catch (error) {
+			throw new HttpException(
+				{
+					status: HttpStatus.BAD_REQUEST,
+					error: `${error.message}`,
 				},
 				HttpStatus.BAD_REQUEST,
 				{
