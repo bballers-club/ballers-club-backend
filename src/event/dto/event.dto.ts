@@ -13,6 +13,11 @@ export class EventDto {
     organizerId : string
 
     @ApiProperty({
+        description : "Playground id where the event will take place"
+    })
+    playgroundId : string
+
+    @ApiProperty({
         description : "Date when the event has been created"
     })
     createdAt : Date

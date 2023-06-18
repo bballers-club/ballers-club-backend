@@ -1,9 +1,13 @@
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, ManyToMany, ManyToOne, OneToMany } from 'typeorm';
+import { Event } from 'src/event/entity/event.entity';
 
 @Entity()
 export class Playground {
 	@PrimaryGeneratedColumn('uuid')
 	id: string;
+
+	@OneToMany(() => Event, event => event.playground)
+	event : Event
 
 	@Column({ length: 150 })
 	name: string;

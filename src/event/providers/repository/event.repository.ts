@@ -39,9 +39,14 @@ export class EventRepository {
         try {
             const validatedId  = z.string().uuid().parse(id);
 
-            return await this.eventRepository.findOneBy({
-                id : validatedId
-            });
+            return await this.eventRepository.findOne({
+                where : {
+                    id : validatedId
+                },
+                relations : {
+                    playground : true
+                }
+            })
         }
         catch(error){
             throw new HttpException(
@@ -97,7 +102,7 @@ export class EventRepository {
         ending_date ?: Date
     }) : Promise<Event> {
         try {
-            const validatedEvent = this.eventObjectValidator.parse(event);
+            const validatedEvent = this.eventObjectValidator.partial().parse(event);
 
             await this.eventRepository.update(validatedEvent.id, validatedEvent);
 
@@ -123,6 +128,30 @@ export class EventRepository {
             const validatedId = z.string().uuid().parse(id);
 
             await this.eventRepository.delete(validatedId)
+        }
+        catch(error){
+            throw new HttpException(
+				{
+					status: HttpStatus.BAD_REQUEST,
+					error: error.message,
+				},
+				HttpStatus.BAD_REQUEST,
+				{
+					cause: error,
+				},
+			);
+        }
+    }
+
+    async getEventState(id : string) : Promise<Event> {
+        try{
+            const validatedId = z.string().uuid().parse(id);
+            const state = await this.eventRepository.createQueryBuilder("event")
+            .addSelect("event.state")
+            .where("event.id = :id", {id : validatedId})
+            .getOne();
+
+            return state;
         }
         catch(error){
             throw new HttpException(

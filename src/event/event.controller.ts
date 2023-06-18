@@ -35,8 +35,13 @@ export class EventController {
     return await this.eventRepository.createEvent(event)
   }
 
-  @Put(":id")
+  @Put()
   async updateEvent(@Body() event : UpdateEventDto): Promise<Event> {
     return await this.eventRepository.updateEvent(event)
+  }
+
+  @Get("/state/:id")
+  async getEventState(@Param('id') id : string): Promise<Event> {
+    return await this.eventRepository.getEventState(id);
   }
 }

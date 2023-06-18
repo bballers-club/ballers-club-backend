@@ -13,6 +13,11 @@ export class UpdateEventDto
     organizerId ?: string
 
     @ApiProperty({
+        description : "Playground id where the event will take place"
+    })
+    playgroundId ?: string
+
+    @ApiProperty({
         description : "Name of the event"
     })
     eventName ?: string

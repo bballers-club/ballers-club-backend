@@ -15,9 +15,15 @@ import { EventTypeModule } from './event_type/event_type.module';
 import { MatchModule } from './match/match.module';
 import { EventParticipantModule } from './event_participant/event_participant.module';
 import { MatchParticipantModule } from './match_participant/match_participant.module';
+import { ServeStaticModule } from '@nestjs/serve-static';
+import { join } from 'path';
 
 @Module({
 	imports: [
+		ServeStaticModule.forRoot({
+			rootPath : join(__dirname,'..','landing'),
+			exclude: ['/api/(.*)']
+		}),
 		DatabaseModule,
 		UserModule,
 		TeamModule,

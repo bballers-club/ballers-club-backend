@@ -1,0 +1,72 @@
+@font-face {
+    font-family: "Montserrat-Medium", sans-serif;
+    src: url(fonts/Montserrat-Medium.ttf) format('ttf');
+}
+
+@font-face {
+    font-family: "Montserrat-Bold", sans-serif;
+    src: url(fonts/Montserrat-Bold.ttf) format('ttf');
+    font-weight : 700;
+}
+
+
+body {
+    background-color: rgb(21, 33, 56);
+    color: white;
+    font-family: "Montserrat-Medium", sans-serif;
+}
+
+.main-div {
+    display : flex;
+    flex-flow : column wrap;
+    align-content: center;
+}
+
+#landing-title {
+    font-size : 36px;
+    color : white;
+    font-family: 'Montserrat-Bold', sans-serif;
+    font-weight: bold;
+    text-align: center;
+}
+
+#logo-container {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: center;
+}
+
+
+#logo {
+    width : 300px;
+    height : 300px;
+}
+
+#card-container {
+    display: flex;
+    flex-flow: row wrap;
+    margin-top : 20px;
+}
+
+.card {
+    padding : 10px;
+    width : 250px;
+    height : 300px;
+    border-radius: 15px;
+    border: 2px solid white;
+    margin : 10px;
+    box-shadow: rgba(154, 107, 184, 0.4) -5px 5px, rgba(154, 107, 184, 0.3) -10px 10px, rgba(154, 107, 184, 0.2) -15px 15px, rgba(154, 107, 184, 0.1) -20px 20px, rgba(154, 107, 184, 0.05) -25px 25px;
+}
+
+.card-title {
+    display: flex;
+    justify-content: center;
+    font-weight : bold;
+    font-size : 24px;
+}
+
+.icon-container {
+    display :flex;
+    flex-flow : row;
+    justify-content : center;
+}
