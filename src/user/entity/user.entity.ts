@@ -58,6 +58,11 @@ export class User {
 	})
 	position: string;
 
+	@Column({
+		default : "user"
+	})
+	role : string;
+
 	@ManyToMany(() => Team, (team) => team.players)
 	teams: Team[];
 

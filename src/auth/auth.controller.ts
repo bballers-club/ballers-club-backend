@@ -1,6 +1,7 @@
-import { Controller, Post, Body, HttpException, HttpStatus } from '@nestjs/common';
-import { supabaseClient } from 'src/main';
+import { Body, Controller, HttpException, HttpStatus, Post, Param } from '@nestjs/common';
 import { SkipAuth } from 'src/decorators/skip_auth.decorator';
+import { supabaseClient } from 'src/main';
+import { UserService } from 'src/user/providers/user.service';
 
 @Controller('auth')
 export class AuthController {

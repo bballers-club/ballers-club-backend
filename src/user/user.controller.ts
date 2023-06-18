@@ -6,6 +6,8 @@ import {
 	Post,
 	Body,
 	Put,
+	HttpException,
+	HttpStatus,
 } from '@nestjs/common';
 import { UserService } from './providers/user.service';
 import { User } from './entity/user.entity';
@@ -15,6 +17,8 @@ import { UpdateUserDto } from './dto/update-user.dto';
 import { ApiTags, ApiResponse, ApiParam } from '@nestjs/swagger';
 import { UserDto } from './dto/user.dto';
 import { ResearchUserDto } from './dto/research-user-dto';
+import { supabaseClient } from 'src/main';
+import { number } from 'zod';
 
 @ApiTags('user')
 @Controller('user')
@@ -76,5 +80,21 @@ export class UserController {
 		@Param('researchValue') researchValue: string,
 	): Promise<ResearchUserDto[]> {
 		return await this.userService.findUsersByName(researchValue);
+	}
+
+	@SkipAuth()
+	@Post("from-api")
+	async createUserFromApi(
+	@Body("email") email : string, 
+	@Body("password") password : string, 
+	@Body("level") level : string, 
+	@Body("username") username : string, 
+	@Body("position") position : string) : Promise<CreateUserDto> {
+		return await this.userService.createUserFromApi(email,password,username,level,position);
+	}
+
+	@Get("backoffice/users")
+	async getUsersListBackoffice() {
+		return await this.userService.usersForBackOffice();
 	}
 }
