@@ -36,7 +36,7 @@ export class SupabaseAuthGuard extends AuthGuard('jwt') implements CanActivate {
 		}
 
 		//If an error is raised, means no session existing for this user otherwise no errors are raised
-		const { data,error } = await supabaseClient.auth.getUser(token);
+		const {error } = await supabaseClient.auth.getUser(token);
 		
 		if (error) {
 			throw new UnauthorizedException();

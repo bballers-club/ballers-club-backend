@@ -2,6 +2,12 @@ import { ApiProperty } from '@nestjs/swagger';
 
 export class UpdateUserDto {
 	@ApiProperty({
+		description: 'User id',
+		nullable: false
+	})
+	id : string
+
+	@ApiProperty({
 		description: 'Username of the user to update',
 		nullable: true,
 	})
@@ -12,6 +18,12 @@ export class UpdateUserDto {
 		nullable: true,
 	})
 	avatarUrl?: string;
+
+	@ApiProperty({
+		description : 'Email of the user',
+		nullable: true
+	})
+	email ?: string
 
 	@ApiProperty({
 		description: 'Level of the user',

@@ -19,6 +19,7 @@ export class UserService {
 			avatarUrl: z.string(),
 			position: z.string(),
 			level: z.string(),
+			email: z.string()
 		})
 		.partial({
 			id: true,
@@ -26,6 +27,7 @@ export class UserService {
 			avatarUrl: true,
 			position: true,
 			level: true,
+			email : true
 		});
 
 	async findAll(): Promise<User[]> {
@@ -120,10 +122,22 @@ export class UserService {
 		user: {
 			username?: string;
 			avatarUrl?: string;
+			email?: string;
 		},
 	): Promise<User> {
 		try {
 			const validatedUser = this.userObjectValidator.parse(user);
+
+			const {error} = await supabaseClient.auth.admin.updateUserById(id, {
+				email : validatedUser.email
+			});
+			
+			if(error){
+				throw new HttpException("Invalid parameters",HttpStatus.BAD_REQUEST);
+			}
+
+			//Remove email key
+			delete validatedUser.email;
 
 			await this.userRepository.update(id, {
 				...validatedUser,
@@ -229,8 +243,9 @@ export class UserService {
 
 			for(const user of auth_users) {
 				const public_user = await this.findOneById(user.id);
-				const createdAt   = public_user.createdAt.toString()
 
+				const createdAt   = public_user.createdAt.toString()
+				
 				dataToReturn.push({
 					id : user.id,
 					email : user.email,
@@ -246,6 +261,84 @@ export class UserService {
 				{
 					status: HttpStatus.BAD_REQUEST,
 					error: `${error.message}`,
+				},
+				HttpStatus.BAD_REQUEST,
+				{
+					cause: error,
+				},
+			);
+		}
+	}
+
+	async banUser(id : string, duration : string, userThatBanned : string) : Promise<Record<string,string>> {
+		try{
+			const validatedId = z.string().uuid().parse(id);
+			const [type, token] = userThatBanned.split(' ') ?? [];
+			const {data} = await supabaseClient.auth.getUser(token);
+	
+			const userHasBannedData = await this.findOneById(data.user.id);
+
+			if(userHasBannedData.role != "admin")
+			{
+				throw new HttpException('Unauthorized action', HttpStatus.FORBIDDEN);
+			}
+
+			const {error} = await supabaseClient.auth.admin.updateUserById(validatedId,{
+				ban_duration : duration
+			})
+
+			if(error){
+				throw new HttpException("Error occured while trying to ban user", 400);
+			}
+
+			return {
+				"id" : validatedId,
+				"duration" : duration
+			}
+		}
+		catch(error){
+			throw new HttpException(
+				{
+					status: HttpStatus.BAD_REQUEST,
+					error: `Invalid parameter : ${error.message}`,
+				},
+				HttpStatus.BAD_REQUEST,
+				{
+					cause: error,
+				},
+			);
+		}
+	}
+
+	async unbanUser(id : string, userThatBanned : string) : Promise<Record<string,string>> {
+		try{
+			const [type, token] = userThatBanned.split(' ') ?? [];
+			const {data} = await supabaseClient.auth.getUser(token);
+
+			const userHasBannedData = await this.findOneById(data.user.id);
+
+			if(userHasBannedData.role != "admin")
+			{
+				throw new HttpException('Unauthorized action', HttpStatus.FORBIDDEN);
+			}
+
+			const {error} = await supabaseClient.auth.admin.updateUserById(id,{
+				ban_duration : "none"
+			})
+	
+			if(error){
+				throw new HttpException("Error occured while trying to ban user", 400);
+			}
+
+			return {
+				"id" : id
+			}
+		}
+		catch(error){
+			throw new HttpException(
+				{
+					status: HttpStatus.BAD_REQUEST,
+					error: `Invalid parameter : ${error.message}`,
 				},
 				HttpStatus.BAD_REQUEST,
 				{

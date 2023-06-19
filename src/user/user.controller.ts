@@ -8,6 +8,8 @@ import {
 	Put,
 	HttpException,
 	HttpStatus,
+	Header,
+	Headers,
 } from '@nestjs/common';
 import { UserService } from './providers/user.service';
 import { User } from './entity/user.entity';
@@ -58,12 +60,11 @@ export class UserController {
 		status: 200,
 		type: UserDto,
 	})
-	@Put(':id')
+	@Put()
 	async updateUser(
-		@Param('id') id: string,
 		@Body() user: UpdateUserDto,
 	): Promise<User> {
-		return this.userService.update(id, user);
+		return this.userService.update(user.id, user);
 	}
 
 	@Delete(':id')
@@ -96,5 +97,17 @@ export class UserController {
 	@Get("backoffice/users")
 	async getUsersListBackoffice() {
 		return await this.userService.usersForBackOffice();
+	}
+
+	@Put("backoffice/ban/:userId")
+	async banUser(@Param("userId") id : string, @Body("duration") duration : string, @Headers() headers : Record<string,string>) : Promise<Record<string,string>> {
+		console.log(headers.authorization)
+		return this.userService.banUser(id, duration,headers.authorization);
+	
+	}
+
+	@Put("backoffice/unban/:userId")
+	async unbanUser(@Param("userId") id : string, @Headers() headers : Record<string,string>) : Promise<Record<string,string>> {
+		return this.userService.unbanUser(id, headers.authorization)
 	}
 }

@@ -9,22 +9,28 @@ export class AuthController {
 
     @SkipAuth()
     @Post()
-    async signIn(@Body("email") email : string, @Body("password") password : string) : Promise<string> {
+    async signIn(@Body("email") email : string, @Body("password") password : string) : Promise<Record<string,string>> {
         try{
             const {data,error} = await supabaseClient.auth.signInWithPassword({
                 email : email,
                 password : password
             })
-
-            if(!error) {
-                return await data.user.id
+           
+            if(error) {
+               throw new HttpException(error.name +" "+error.message,400)
             }
+
+            return await {
+                id : data.user.id,
+                token : data.session.access_token
+            }
+
         }
         catch(error){
             throw new HttpException(
 				{
 					status: HttpStatus.BAD_REQUEST,
-					error: `Invalid parameter : ${error.message}`,
+					error: `${error.message}`,
 				},
 				HttpStatus.BAD_REQUEST,
 				{
