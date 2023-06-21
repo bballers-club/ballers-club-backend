@@ -325,7 +325,7 @@ export class UserService {
 			const {error} = await supabaseClient.auth.admin.updateUserById(id,{
 				ban_duration : "none"
 			})
-	
+		
 			if(error){
 				throw new HttpException("Error occured while trying to ban user", 400);
 			}
@@ -335,6 +335,53 @@ export class UserService {
 			}
 		}
 		catch(error){
+			throw new HttpException(
+				{
+					status: HttpStatus.BAD_REQUEST,
+					error: `Invalid parameter : ${error.message}`,
+				},
+				HttpStatus.BAD_REQUEST,
+				{
+					cause: error,
+				},
+			);
+		}
+	}
+
+	async updateForBackoffice(
+		id: string,
+		user: {
+			id ?: string;
+			username?: string;
+			email?: string;
+			createdAt ?: string;
+		},
+	): Promise<{
+			id : string,
+			username : string,
+			email : string,
+			createdAt : string
+		}[]> {
+		try {
+			const validatedUser = this.userObjectValidator.parse(user);
+
+			const {error} = await supabaseClient.auth.admin.updateUserById(id, {
+				email : validatedUser.email
+			});
+		
+			if(error){
+				throw new HttpException(error.message,HttpStatus.BAD_REQUEST);
+			}
+
+			//Remove email key
+			delete validatedUser.email;
+
+			await this.userRepository.update(id, {
+				...validatedUser,
+			});
+
+			return await this.usersForBackOffice();
+		} catch (error) {
 			throw new HttpException(
 				{
 					status: HttpStatus.BAD_REQUEST,
