@@ -5,4 +5,5 @@ export class UserBackofficeDto {
     username : string;
     email : string;
     createdAt : string
+    isBanned: Boolean;
 }

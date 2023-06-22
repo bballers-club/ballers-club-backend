@@ -27,4 +27,10 @@ export class CreateEventDto {
         nullable : true
     })
     ending_date ?: Date
+
+    @ApiProperty({
+        description: "Time when the event starts",
+        nullable : true
+    })
+    eventTime ?: Date
 }

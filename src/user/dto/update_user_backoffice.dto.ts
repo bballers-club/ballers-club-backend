@@ -5,4 +5,5 @@ export class UpdateUserBackofficeDto {
     username ?: string;
     email ?: string;
     createdAt ?: string
+    isBanned ?: Boolean;
 }

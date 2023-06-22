@@ -3,7 +3,7 @@ import { Repository, ILike } from 'typeorm';
 import { User } from '../entity/user.entity';
 import { z } from 'zod';
 import { supabaseClient } from 'src/main';
-import { UserBackofficeDto } from '../dto/user_backoffice.dto';
+import { DateUtils } from 'src/utils/date.utils';
 
 @Injectable()
 export class UserService {
@@ -70,6 +70,7 @@ export class UserService {
 
 	async create(user: {
 		id: string;
+		email : string;
 		username: string;
 		level: string;
 		position: string;
@@ -136,9 +137,6 @@ export class UserService {
 				throw new HttpException("Invalid parameters",HttpStatus.BAD_REQUEST);
 			}
 
-			//Remove email key
-			delete validatedUser.email;
-
 			await this.userRepository.update(id, {
 				...validatedUser,
 			});
@@ -199,9 +197,10 @@ export class UserService {
 
 				return await this.create({
 					id : data.user.id,
-					username : username,
-					level : level,
-					position : position
+					username : z.string().parse(username),
+					level : z.string().parse(level),
+					position : z.string().parse(position),
+					email : z.string().email().parse(email)
 				})
 			}
 
@@ -223,36 +222,31 @@ export class UserService {
 		id : string,
 		username : string,
 		email : string,
-		createdAt : string
+		createdAt : string,
+		isBanned: Boolean
 	}[]> {
 		try {
 			
-			const { data, error }  = await supabaseClient.auth.admin.listUsers()
 			const dataToReturn : {
 				id : string,
 				username : string,
 				email : string,
-				createdAt : string
-			}[] = []
+				createdAt : string,
+				isBanned : Boolean
+			}[] = [];
 
-			if(error){
-				throw new HttpException(error.message,HttpStatus.BAD_REQUEST)
-			}
-			
-			const auth_users = data.users;
+			const users = await this.findAll();
 
-			for(const user of auth_users) {
-				const public_user = await this.findOneById(user.id);
-
-				const createdAt   = public_user.createdAt.toString()
-				
+			for(const user of users){
 				dataToReturn.push({
 					id : user.id,
+					username : user.username,
 					email : user.email,
-					username : public_user.username,
-					createdAt : createdAt
-				});
-			}			
+					createdAt : user.createdAt.toString(),
+					isBanned : user.is_banned
+				})
+			}
+					
 			
 			return dataToReturn;
 
@@ -270,7 +264,7 @@ export class UserService {
 		}
 	}
 
-	async banUser(id : string, duration : string, userThatBanned : string) : Promise<Record<string,string>> {
+	async banUser(id : string, duration : number, userThatBanned : string) : Promise<Record<string,string>> {
 		try{
 			const validatedId = z.string().uuid().parse(id);
 			const [type, token] = userThatBanned.split(' ') ?? [];
@@ -283,17 +277,24 @@ export class UserService {
 				throw new HttpException('Unauthorized action', HttpStatus.FORBIDDEN);
 			}
 
+			
+
 			const {error} = await supabaseClient.auth.admin.updateUserById(validatedId,{
-				ban_duration : duration
+				ban_duration : `${duration}h`
 			})
 
 			if(error){
 				throw new HttpException("Error occured while trying to ban user", 400);
 			}
+			const banned_until = DateUtils.addHoursToCurrentDate(duration)
+			await this.userRepository.update(validatedId,{
+				banned_until : banned_until,
+				is_banned : true
+			})
 
 			return {
 				"id" : validatedId,
-				"duration" : duration
+				"duration" : `${duration.toString()}h`
 			}
 		}
 		catch(error){
@@ -312,6 +313,7 @@ export class UserService {
 
 	async unbanUser(id : string, userThatBanned : string) : Promise<Record<string,string>> {
 		try{
+			const validatedId = z.string().uuid().parse(id);
 			const [type, token] = userThatBanned.split(' ') ?? [];
 			const {data} = await supabaseClient.auth.getUser(token);
 
@@ -329,6 +331,11 @@ export class UserService {
 			if(error){
 				throw new HttpException("Error occured while trying to ban user", 400);
 			}
+
+			await this.userRepository.update(validatedId,{
+				banned_until : null,
+				is_banned : false
+			})
 
 			return {
 				"id" : id
@@ -361,6 +368,7 @@ export class UserService {
 			username : string,
 			email : string,
 			createdAt : string
+			isBanned: Boolean
 		}[]> {
 		try {
 			const validatedUser = this.userObjectValidator.parse(user);
@@ -373,9 +381,6 @@ export class UserService {
 				throw new HttpException(error.message,HttpStatus.BAD_REQUEST);
 			}
 
-			//Remove email key
-			delete validatedUser.email;
-
 			await this.userRepository.update(id, {
 				...validatedUser,
 			});
@@ -386,6 +391,31 @@ export class UserService {
 				{
 					status: HttpStatus.BAD_REQUEST,
 					error: `Invalid parameter : ${error.message}`,
+				},
+				HttpStatus.BAD_REQUEST,
+				{
+					cause: error,
+				},
+			);
+		}
+	}
+
+	async findUserByEmail(email : string): Promise<User> {
+		try{
+			const validatedEmail = z.string().email().parse(email);
+
+			return await this.userRepository
+			.createQueryBuilder("user")
+			.select(["user.is_banned","user.banned_until"])
+			.where("user.email = :email", {email : validatedEmail})
+			.getOne();
+
+		}
+		catch(error){
+			throw new HttpException(
+				{
+					status: HttpStatus.BAD_REQUEST,
+					error: error.message,
 				},
 				HttpStatus.BAD_REQUEST,
 				{

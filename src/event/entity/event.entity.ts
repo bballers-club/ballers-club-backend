@@ -44,7 +44,6 @@ export class Event {
     @Column({
         type : 'date',
         nullable : true
-        
     })
     ending_date : 'date'
 
@@ -52,4 +51,10 @@ export class Event {
         enum : [1,2,3] //1 : Ouvert | 2 : En cours | 3 : Terminé 
     })
     state : number
+
+    @Column({
+        type : "time with time zone",
+        nullable : true
+    })
+    eventTime : Date
 }

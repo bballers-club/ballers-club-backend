@@ -63,6 +63,22 @@ export class User {
 	})
 	role : string;
 
+	@Column({
+		default : false
+	})
+	is_banned : Boolean
+
+	@Column({
+		nullable : true,
+		type : 'timestamptz'
+	})
+	banned_until : Date;
+
+	@Column({
+		nullable : true
+	})
+	email : string;
+
 	@ManyToMany(() => Team, (team) => team.players)
 	teams: Team[];
 

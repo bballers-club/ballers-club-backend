@@ -66,7 +66,8 @@ export class EventRepository {
         organizerId : string,
         eventName : string,
         starting_date ?: Date,
-        ending_date ?: Date
+        ending_date ?: Date,
+        eventTime ?: Date
     }) : Promise<Event> {
         try {
             
@@ -99,7 +100,8 @@ export class EventRepository {
         organizerId ?: string,
         eventName ?: string,
         starting_date ?: Date,
-        ending_date ?: Date
+        ending_date ?: Date,
+        eventTime ?: Date
     }) : Promise<Event> {
         try {
             const validatedEvent = this.eventObjectValidator.partial().parse(event);

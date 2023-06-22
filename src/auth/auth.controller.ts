@@ -15,6 +15,12 @@ export class AuthController {
                 email : email,
                 password : password
             })
+
+            const user_info = await this.userService.findUserByEmail(email);
+
+            if(user_info.is_banned && user_info.banned_until){
+                throw new HttpException(`The user is banned until : ${user_info.banned_until}`, HttpStatus.FORBIDDEN);
+            }
            
             if(error) {
                throw new HttpException(error.name +" "+error.message,400)
@@ -27,12 +33,13 @@ export class AuthController {
 
         }
         catch(error){
+    
             throw new HttpException(
 				{
-					status: HttpStatus.BAD_REQUEST,
+					status: error.status,
 					error: `${error.message}`,
 				},
-				HttpStatus.BAD_REQUEST,
+				error.status,
 				{
 					cause: error,
 				},
@@ -67,10 +74,10 @@ export class AuthController {
         catch(error){
             throw new HttpException(
 				{
-					status: HttpStatus.BAD_REQUEST,
+					status: error.status,
 					error: error.message,
 				},
-				HttpStatus.BAD_REQUEST,
+				error.status,
 				{
 					cause: error,
 				},

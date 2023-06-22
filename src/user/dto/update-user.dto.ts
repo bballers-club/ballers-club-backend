@@ -36,4 +36,11 @@ export class UpdateUserDto {
 		nullable: true,
 	})
 	position?: string;
+
+	@ApiProperty({
+		description: 'Boolean to determine wether a user is banned or not',
+		default: false
+	})
+	isBanned : Boolean
+
 }

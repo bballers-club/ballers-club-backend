@@ -103,7 +103,7 @@ export class UserController {
 	}
 
 	@Put("backoffice/ban/:userId")
-	async banUser(@Param("userId") id : string, @Body("duration") duration : string, @Headers() headers : Record<string,string>) : Promise<Record<string,string>> {
+	async banUser(@Param("userId") id : string, @Body("duration") duration : number, @Headers() headers : Record<string,string>) : Promise<Record<string,string>> {
 		
 		return this.userService.banUser(id, duration,headers.authorization);
 	
