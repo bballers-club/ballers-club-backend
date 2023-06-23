@@ -264,8 +264,9 @@ export class UserService {
 		}
 	}
 
-	async banUser(id : string, duration : number, userThatBanned : string) : Promise<Record<string,string>> {
+	async banUser(id : string, duration : number, userThatBanned : string) : Promise<string> {
 		try{
+			
 			const validatedId = z.string().uuid().parse(id);
 			const [type, token] = userThatBanned.split(' ') ?? [];
 			const {data} = await supabaseClient.auth.getUser(token);
@@ -292,10 +293,8 @@ export class UserService {
 				is_banned : true
 			})
 
-			return {
-				"id" : validatedId,
-				"duration" : `${duration.toString()}h`
-			}
+			return validatedId;
+
 		}
 		catch(error){
 			throw new HttpException(
@@ -311,7 +310,7 @@ export class UserService {
 		}
 	}
 
-	async unbanUser(id : string, userThatBanned : string) : Promise<Record<string,string>> {
+	async unbanUser(id : string, userThatBanned : string) : Promise<string> {
 		try{
 			const validatedId = z.string().uuid().parse(id);
 			const [type, token] = userThatBanned.split(' ') ?? [];
@@ -329,7 +328,7 @@ export class UserService {
 			})
 		
 			if(error){
-				throw new HttpException("Error occured while trying to ban user", 400);
+				throw new HttpException("Error occured while trying to unban user", 400);
 			}
 
 			await this.userRepository.update(validatedId,{
@@ -337,9 +336,7 @@ export class UserService {
 				is_banned : false
 			})
 
-			return {
-				"id" : id
-			}
+			return validatedId;
 		}
 		catch(error){
 			throw new HttpException(

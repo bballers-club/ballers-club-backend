@@ -102,15 +102,16 @@ export class UserController {
 		return await this.userService.usersForBackOffice();
 	}
 
-	@Put("backoffice/ban/:userId")
-	async banUser(@Param("userId") id : string, @Body("duration") duration : number, @Headers() headers : Record<string,string>) : Promise<Record<string,string>> {
+	@Post("backoffice/ban/:userId")
+	async banUser(@Param("userId") id : string, @Body("duration") duration : number, @Headers() headers : Record<string,string>) : Promise<string> {
 		
 		return this.userService.banUser(id, duration,headers.authorization);
 	
 	}
 
-	@Put("backoffice/unban/:userId")
-	async unbanUser(@Param("userId") id : string, @Headers() headers : Record<string,string>) : Promise<Record<string,string>> {
+	@Post("backoffice/unban/:userId")
+	async unbanUser(@Param("userId") id : string, @Headers() headers : Record<string,string>) : Promise<string> {
+		
 		return this.userService.unbanUser(id, headers.authorization)
 	}
 
