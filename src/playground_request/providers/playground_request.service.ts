@@ -48,6 +48,7 @@ export class PlaygroundRequestService {
 				createdPlayground,
 			);
 		} catch (error) {
+			console.error(error)
 			throw new HttpException(
 				{
 					status: HttpStatus.BAD_REQUEST,
@@ -78,9 +79,10 @@ export class PlaygroundRequestService {
 					name: 'ASC',
 				},
 			});
-			console.log(playgrounds);
+		
 			return playgrounds;
 		} catch (error) {
+			console.error(error)
 			throw new HttpException(
 				{
 					status: HttpStatus.BAD_REQUEST,
@@ -102,6 +104,7 @@ export class PlaygroundRequestService {
 				id: validatedId,
 			});
 		} catch (error) {
+			console.error(error)
 			throw new HttpException(
 				{
 					status: HttpStatus.BAD_REQUEST,
@@ -121,6 +124,7 @@ export class PlaygroundRequestService {
 
 			await this.playgroundRequestRepository.delete(validatedId);
 		} catch (error) {
+			console.error(error)
 			throw new HttpException(
 				{
 					status: HttpStatus.BAD_REQUEST,
