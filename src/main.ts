@@ -3,6 +3,7 @@ import { AppModule } from './app.module';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { config } from 'dotenv';
 import { createClient } from '@supabase/supabase-js';
+import * as OneSignal from '@onesignal/node-onesignal';
 
 config();
 
@@ -39,5 +40,13 @@ export const supabaseClient = createClient(
 		},
 	},
 );
+
+export const oneSignalClient = new OneSignal.DefaultApi(
+	OneSignal.createConfiguration({
+		userKey : process.env.ONE_SIGNAL_USER_AUTH_KEY,
+		appKey : process.env.ONE_SIGNAL_API_KEY
+	})
+);
+
 
 bootstrap();
