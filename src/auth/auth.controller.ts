@@ -9,24 +9,37 @@ export class AuthController {
 
     @SkipAuth()
     @Post()
-    async signIn(@Body("email") email : string, @Body("password") password : string) : Promise<string> {
+    async signIn(@Body("email") email : string, @Body("password") password : string) : Promise<Record<string,string>> {
         try{
             const {data,error} = await supabaseClient.auth.signInWithPassword({
                 email : email,
                 password : password
             })
 
-            if(!error) {
-                return await data.user.id
+            const user_info = await this.userService.findUserByEmail(email);
+
+            if(user_info.is_banned && user_info.banned_until){
+                throw new HttpException(`The user is banned until : ${user_info.banned_until}`, HttpStatus.FORBIDDEN);
             }
+           
+            if(error) {
+               throw new HttpException(error.name +" "+error.message,400)
+            }
+
+            return await {
+                id : data.user.id,
+                token : data.session.access_token
+            }
+
         }
         catch(error){
+    
             throw new HttpException(
 				{
-					status: HttpStatus.BAD_REQUEST,
-					error: `Invalid parameter : ${error.message}`,
+					status: error.status,
+					error: `${error.message}`,
 				},
-				HttpStatus.BAD_REQUEST,
+				error.status,
 				{
 					cause: error,
 				},
@@ -47,8 +60,6 @@ export class AuthController {
                 throw new HttpException('Invalid credentials',HttpStatus.BAD_REQUEST)
             }
 
-            console.log(data)
-
             const user = await this.userService.findOneById(data.user.id);
 
             if(user.role != "admin"){
@@ -63,10 +74,10 @@ export class AuthController {
         catch(error){
             throw new HttpException(
 				{
-					status: HttpStatus.BAD_REQUEST,
+					status: error.status,
 					error: error.message,
 				},
-				HttpStatus.BAD_REQUEST,
+				error.status,
 				{
 					cause: error,
 				},

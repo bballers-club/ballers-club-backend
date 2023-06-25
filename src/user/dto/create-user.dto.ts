@@ -31,4 +31,9 @@ export class CreateUserDto {
 		example: 'PG',
 	})
 	position: string;
+
+	@ApiProperty({
+		description : 'Email of the user'
+	})
+	email : string
 }

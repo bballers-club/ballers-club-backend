@@ -8,6 +8,9 @@ import {
 	Put,
 	HttpException,
 	HttpStatus,
+	Header,
+	Headers,
+	Patch,
 } from '@nestjs/common';
 import { UserService } from './providers/user.service';
 import { User } from './entity/user.entity';
@@ -19,6 +22,8 @@ import { UserDto } from './dto/user.dto';
 import { ResearchUserDto } from './dto/research-user-dto';
 import { supabaseClient } from 'src/main';
 import { number } from 'zod';
+import { UpdateUserBackofficeDto } from './dto/update_user_backoffice.dto';
+import { UserBackofficeDto } from './dto/user_backoffice.dto';
 
 @ApiTags('user')
 @Controller('user')
@@ -58,12 +63,11 @@ export class UserController {
 		status: 200,
 		type: UserDto,
 	})
-	@Put(':id')
+	@Put()
 	async updateUser(
-		@Param('id') id: string,
 		@Body() user: UpdateUserDto,
 	): Promise<User> {
-		return this.userService.update(id, user);
+		return this.userService.update(user.id, user);
 	}
 
 	@Delete(':id')
@@ -96,5 +100,23 @@ export class UserController {
 	@Get("backoffice/users")
 	async getUsersListBackoffice() {
 		return await this.userService.usersForBackOffice();
+	}
+
+	@Post("backoffice/ban/:userId")
+	async banUser(@Param("userId") id : string, @Body("duration") duration : number, @Headers() headers : Record<string,string>) : Promise<string> {
+		
+		return this.userService.banUser(id, duration,headers.authorization);
+	
+	}
+
+	@Post("backoffice/unban/:userId")
+	async unbanUser(@Param("userId") id : string, @Headers() headers : Record<string,string>) : Promise<string> {
+		
+		return this.userService.unbanUser(id, headers.authorization)
+	}
+
+	@Post("backoffice/user")
+	async updateUserFromBackoffice(@Body() updateUser : UpdateUserBackofficeDto) : Promise<UserBackofficeDto[]> {
+		return this.userService.updateForBackoffice(updateUser.id,updateUser);
 	}
 }

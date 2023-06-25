@@ -7,6 +7,11 @@ export class CreateEventDto {
     organizerId : string
 
     @ApiProperty({
+        description : "Playground id where the event will take place"
+    })
+    playgroundId : string
+
+    @ApiProperty({
         description : "Name of the event"
     })
     eventName : string
@@ -22,4 +27,10 @@ export class CreateEventDto {
         nullable : true
     })
     ending_date ?: Date
+
+    @ApiProperty({
+        description: "Time when the event starts",
+        nullable : true
+    })
+    eventTime ?: Date
 }

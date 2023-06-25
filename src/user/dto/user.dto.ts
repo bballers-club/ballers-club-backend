@@ -59,4 +59,18 @@ export class UserDto {
 	})
 	role : string;
 	
+	@ApiProperty({
+		description: "Boolean to determine wether the user is banned or not"
+	})
+	isBanned : Boolean;
+
+	@ApiProperty({
+		description : "Date when the ban ends"
+	})
+	bannedUntil : string;
+
+	@ApiProperty({
+		description : "Email of the user"
+	})
+	email : string;
 }

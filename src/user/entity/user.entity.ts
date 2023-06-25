@@ -11,6 +11,7 @@ import {
 import { Event } from 'src/event/entity/event.entity';
 import { EventParticipant } from 'src/event_participant/entity/event_participant.entity';
 import { MatchParticipant } from 'src/match_participant/entities/match_participant.entity';
+import { NotificationsHistory } from 'src/notifications_history/entity/notifications_history.entity';
 
 
 @Entity()
@@ -63,6 +64,22 @@ export class User {
 	})
 	role : string;
 
+	@Column({
+		default : false
+	})
+	is_banned : Boolean
+
+	@Column({
+		nullable : true,
+		type : 'timestamptz'
+	})
+	banned_until : Date;
+
+	@Column({
+		nullable : true
+	})
+	email : string;
+
 	@ManyToMany(() => Team, (team) => team.players)
 	teams: Team[];
 
@@ -80,6 +97,9 @@ export class User {
 
 	@OneToMany(() => MatchParticipant, (match_participant) => match_participant.user)
 	match_participant : MatchParticipant[]
+
+	@OneToMany(() => NotificationsHistory , (notifications) => notifications.sender)
+	notifications : NotificationsHistory[]
 
 	@CreateDateColumn({ type: 'date' })
 	createdAt: Date;
