@@ -17,6 +17,11 @@ export class CreateEventDto {
     eventName : string
 
     @ApiProperty({
+        description : "State of the event"
+    })
+    state : number
+
+    @ApiProperty({
         description : "Date when the event will start",
         nullable : true
     })

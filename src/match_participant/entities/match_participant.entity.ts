@@ -1,6 +1,6 @@
 import { Match } from "src/match/entity/match.entity";
 import { User } from "src/user/entity/user.entity";
-import { Entity, ManyToOne, PrimaryColumn } from "typeorm";
+import { Column, Entity, ManyToOne, PrimaryColumn } from "typeorm";
 
 @Entity()
 export class MatchParticipant {
@@ -9,6 +9,12 @@ export class MatchParticipant {
 
     @PrimaryColumn("uuid")
     userId : string
+    
+    @Column()
+    inTeamOne : boolean
+
+    @Column()
+    inTeamTwo: boolean
 
     @ManyToOne(() => Match, match => match.match_participant)
     match : Match[]

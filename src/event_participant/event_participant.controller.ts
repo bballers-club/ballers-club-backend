@@ -3,6 +3,7 @@ import { EventParticipantService } from './providers/services/event_participant.
 import { EventParticipantRepository } from './providers/repositories/event_participant.repository';
 import { ApiTags } from '@nestjs/swagger';
 import { EventParticipantDto } from './dto/event_participant.dto';
+import { CreateEventParticipantDto } from './dto/create-event_participant.dto';
 
 @ApiTags("event-participant")
 @Controller('event-participant')
@@ -15,7 +16,7 @@ export class EventParticipantController {
   }
 
   @Post()
-  async addParticipants(@Body() participants : EventParticipantDto[]) : Promise<EventParticipantDto[]> {
+  async addParticipants(@Body() participants : CreateEventParticipantDto[]) : Promise<EventParticipantDto[]> {
     return await this.eventParticipantRepository.addParticipant(participants)
   }
 

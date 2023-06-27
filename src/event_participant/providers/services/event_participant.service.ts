@@ -1,7 +1,9 @@
-import { Injectable } from '@nestjs/common';
-import { CreateEventParticipantDto } from '../../dto/create-event_participant.dto';
+import { HttpException, Injectable } from '@nestjs/common';
+import { EventParticipantRepository } from '../repositories/event_participant.repository';
 
 @Injectable()
 export class EventParticipantService {
-
+    constructor(
+		private eventParticipantRepository: EventParticipantRepository
+	) {}
 }

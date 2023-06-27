@@ -76,7 +76,7 @@ export class User {
 	banned_until : Date;
 
 	@Column({
-		nullable : true
+		nullable : false
 	})
 	email : string;
 

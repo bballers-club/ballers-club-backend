@@ -8,7 +8,7 @@ import { CreateNotificationsHistoryDto } from './dto/create_notifications_histor
 export class NotificationsHistoryController {
   constructor(private readonly notificationsHistoryService: NotificationsHistoryService, private readonly notificationsHistoryRepository : NotificationsHistoryRepository) {}
 
-  @Get()
+  @Get('/backoffice')
   async getAllNotifications() : Promise<NotificationsHistoryDto[]>{
     return await this.notificationsHistoryRepository.getAllNotifications();
   }

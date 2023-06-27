@@ -6,6 +6,8 @@ import { EventRepository } from './providers/repository/event.repository';
 import { Event } from './entity/event.entity';
 import { CreateEventDto } from './dto/create_event.dto';
 import { UpdateEventDto } from './dto/update_event.dto';
+import { string } from 'zod';
+import { CreateEventParticipantDto } from 'src/event_participant/dto/create-event_participant.dto';
 
 @ApiTags('event')
 @Controller('event')
@@ -43,5 +45,15 @@ export class EventController {
   @Get("/state/:id")
   async getEventState(@Param('id') id : string): Promise<Event> {
     return await this.eventRepository.getEventState(id);
+  }
+
+  @ApiResponse({
+    status : 201,
+    type: class ReturnId { id : string}
+  })
+  @Post("/create-and-add-participant")
+  async createEventAndAddParticipant(@Body('event') event : CreateEventDto, @Body('participants') participants : string[]) : Promise<{id : string}> {
+    console.log(event,participants)
+    return await this.eventService.createEventAndAddParticipant(event, participants);
   }
 }

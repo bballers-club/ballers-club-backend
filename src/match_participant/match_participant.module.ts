@@ -8,6 +8,7 @@ import { MatchParticipantRepository } from './providers/repository/match_partici
 @Module({
   imports : [DatabaseModule],
   controllers: [MatchParticipantController],
-  providers: [...matchParticipantProvider,MatchParticipantService,MatchParticipantRepository]
+  providers: [...matchParticipantProvider,MatchParticipantService,MatchParticipantRepository],
+  exports: [MatchParticipantRepository]
 })
 export class MatchParticipantModule {}

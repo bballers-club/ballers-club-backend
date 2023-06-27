@@ -96,5 +96,27 @@ export class EventParticipantRepository {
 			);
         }
     }
+
+    async createParticipantObject(eventParticipant : { eventId : string, userId : string}) : Promise<EventParticipant> {
+        try{
+            
+            return await this.eventParticipantRepository.create({
+                ...eventParticipant
+            });
+            
+        }
+        catch(error){
+            throw new HttpException(
+				{
+					status: HttpStatus.BAD_REQUEST,
+					error: error.message,
+				},
+				HttpStatus.BAD_REQUEST,
+				{
+					cause: error,
+				},
+			);
+        }
+    }
     
 }

@@ -14,8 +14,13 @@ export class EventRepository {
     private eventObjectValidator = z.object({
         id : z.string().uuid(),
         organizerId : z.string().uuid(),
+        state : z.number(),
         eventName : z.string(),
-    })
+        playgroundId : z.string().optional(),
+        starting_date : z.string().optional(),
+        ending_date : z.string().optional(),
+        eventTime : z.string().optional()
+    });
 
     async findAll() : Promise<Event[]> {
         try{
@@ -64,7 +69,9 @@ export class EventRepository {
 
     async createEvent(event : {
         organizerId : string,
+        state : number,
         eventName : string,
+        playgroundId ?: string,
         starting_date ?: Date,
         ending_date ?: Date,
         eventTime ?: Date
@@ -73,7 +80,7 @@ export class EventRepository {
             
 
             const validatedEvent = this.eventObjectValidator.omit({id : true}).parse(event);
-
+        
             const createdEvent = await this.eventRepository.create({
                 ...validatedEvent
             });
@@ -81,6 +88,7 @@ export class EventRepository {
             return await this.eventRepository.save(createdEvent)
         }
         catch(error){
+            console.log(error)
             throw new HttpException(
 				{
 					status: HttpStatus.BAD_REQUEST,
@@ -88,7 +96,7 @@ export class EventRepository {
 				},
 				HttpStatus.BAD_REQUEST,
 				{
-					cause: error,
+					cause: error.message,
 				},
 			);
         }
@@ -98,17 +106,17 @@ export class EventRepository {
     async updateEvent(event : {
         id : string
         organizerId ?: string,
+        playgroundId ?: string,
         eventName ?: string,
         starting_date ?: Date,
         ending_date ?: Date,
         eventTime ?: Date
     }) : Promise<Event> {
         try {
-            const validatedEvent = this.eventObjectValidator.partial().parse(event);
+            
+            await this.eventRepository.update(event.id, event);
 
-            await this.eventRepository.update(validatedEvent.id, validatedEvent);
-
-            return await this.findEventById(validatedEvent.id);
+            return await this.findEventById(event.id);
              
         }
         catch(error){

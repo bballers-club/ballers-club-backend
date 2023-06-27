@@ -13,6 +13,11 @@ export class Event {
     @Column()
     organizerId : string
 
+    @Column({
+        nullable : true
+    })
+    playgroundId : string
+
     @ManyToOne(() => User, user => user.event)
     organizer : User
 
@@ -39,13 +44,13 @@ export class Event {
         nullable : true,
         default : "now()"
     })
-    starting_date : Date
+    starting_date ?: Date
 
     @Column({
         type : 'date',
         nullable : true
     })
-    ending_date : 'date'
+    ending_date ?: Date
 
     @Column({
         enum : [1,2,3] //1 : Ouvert | 2 : En cours | 3 : Terminé 
@@ -56,5 +61,5 @@ export class Event {
         type : "time with time zone",
         nullable : true
     })
-    eventTime : Date
+    eventTime ?: Date
 }
