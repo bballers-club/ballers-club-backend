@@ -15,11 +15,11 @@ export class EventService {
 
 	async createEventAndAddParticipant(event : CreateEventDto, eventParticipant : string[]) : Promise<{id : string}> {
 		try{    
-			console.log("test")
+			
 			//First create the event
 			const createdEvent = await this.eventRepository.createEvent(event);
 			const eventParticipantToAdd : EventParticipant[] = [];
-			console.log(createdEvent);
+
 			for(const participant of eventParticipant){
 				eventParticipantToAdd.push(await this.eventParticipantRepository.createParticipantObject({
 					"eventId" : createdEvent.id,

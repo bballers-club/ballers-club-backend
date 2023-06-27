@@ -56,4 +56,9 @@ export class EventController {
     console.log(event,participants)
     return await this.eventService.createEventAndAddParticipant(event, participants);
   }
+
+  @Get("user-event/:userId")
+  async getUserEventList(@Param('userId') userId : string) : Promise<Event[]> {
+    return await this.eventRepository.getEventListForAUser(userId);
+  }
 }

@@ -229,4 +229,28 @@ export class PlaygroundsService {
 
 		return dist;
 	}
+
+	async validatePlaygroundRequested(playground_id : string,request_pending : boolean) : Promise<Playground> {
+		try {
+			const validated_playground_id = z.string().uuid().parse(playground_id);
+
+			await this.playgroundRepository.update(validated_playground_id,{
+				request_pending : request_pending
+			});
+
+			return await this.findOneById(playground_id);
+			
+		} catch (error) {
+			throw new HttpException(
+				{
+					status: error.status,
+					error: error.message,
+				},
+				error.status,
+				{
+					cause: error,
+				},
+			);
+		}
+	}
 }

@@ -33,6 +33,12 @@ export class Playground {
 	zipcode: string;
 
 	@Column({
+		nullable : false,
+		default : true
+	})
+	request_pending : boolean
+
+	@Column({
 		type: 'double precision',
 	})
 	latitude: number;

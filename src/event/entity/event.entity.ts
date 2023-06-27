@@ -18,6 +18,11 @@ export class Event {
     })
     playgroundId : string
 
+    @Column({
+        nullable : false
+    })
+    typeId : string
+
     @ManyToOne(() => User, user => user.event)
     organizer : User
 

@@ -8,13 +8,13 @@ export class MatchParticipant {
     matchId : string;
 
     @PrimaryColumn("uuid")
-    userId : string
+    userId : string;
     
     @Column()
-    inTeamOne : boolean
+    inTeamOne : boolean;
 
     @Column()
-    inTeamTwo: boolean
+    inTeamTwo: boolean;
 
     @ManyToOne(() => Match, match => match.match_participant)
     match : Match[]

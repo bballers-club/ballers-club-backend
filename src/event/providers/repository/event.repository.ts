@@ -176,4 +176,40 @@ export class EventRepository {
 			);
         }
     }
+
+    async getEventListForAUser(id : string) : Promise<Event[]> {
+        try{
+            const validatedId = z.string().uuid().parse(id);
+            const queried_data = this.eventRepository
+            .query(`select distinct
+                event."eventName",
+                event.starting_date,
+                event."eventTime",
+                playground.address,
+                playground.city,
+                event_type.name
+            from
+                event
+            LEFT JOIN playground on playground.id = event."playgroundId"
+            LEFT JOIN event_type on event_type.id = event."typeId"  
+            LEFT JOIN event_participant on event_participant."eventId" = event.id
+            WHERE event."organizerId" = '${validatedId}' OR "event_participant"."userId" = '${validatedId}';
+          `);
+
+            return queried_data;
+        }
+        catch(error){
+            console.log(error);
+            throw new HttpException(
+				{
+					status: HttpStatus.BAD_REQUEST,
+					error: error.message,
+				},
+				HttpStatus.BAD_REQUEST,
+				{
+					cause: error,
+				},
+			);
+        }
+    }
 }
