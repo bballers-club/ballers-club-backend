@@ -51,6 +51,16 @@ export class AuthController {
     @Post("backoffice")
     async signInToBackOffice(@Body("email") email :string, @Body("password") password : string) : Promise<Record<string, string>> {
         try{
+            const user = await this.userService.findUserByEmail(email);
+
+            if(!user){
+                throw new HttpException('User doesn\'t exist',HttpStatus.BAD_REQUEST);
+            }
+
+            if(user.is_banned){
+                throw new HttpException(`User is banned until ${user.banned_until}`,HttpStatus.UNAUTHORIZED)
+            }
+
             const {data, error} = await supabaseClient.auth.signInWithPassword({
                 email : email,
                 password : password
@@ -59,8 +69,6 @@ export class AuthController {
             if(error) {
                 throw new HttpException('Invalid credentials',HttpStatus.BAD_REQUEST)
             }
-
-            const user = await this.userService.findOneById(data.user.id);
 
             if(user.role != "admin"){
                 throw new HttpException('Unauthorized', HttpStatus.FORBIDDEN);

@@ -218,7 +218,7 @@ export class UserService {
 		}
 	}
 
-	async usersForBackOffice() : Promise<{
+	async usersForBackOffice(researchValue : string = "") : Promise<{
 		id : string,
 		username : string,
 		email : string,
@@ -235,7 +235,27 @@ export class UserService {
 				isBanned : Boolean
 			}[] = [];
 
-			const users = await this.findAll();
+			let users : User[];
+			
+			if(researchValue.length > 1){
+				users = await this.userRepository.find({
+					where: [
+						{
+							username: ILike(`%${researchValue}%`),
+						},
+						{
+							email : ILike(`%${researchValue}%`)
+						}
+					]
+						
+					,
+				});
+			}
+			else{
+				users = await this.findAll();
+			}
+
+			
 
 			for(const user of users){
 				dataToReturn.push({
@@ -401,11 +421,11 @@ export class UserService {
 		try{
 			const validatedEmail = z.string().email().parse(email);
 
-			return await this.userRepository
-			.createQueryBuilder("user")
-			.select(["user.is_banned","user.banned_until"])
-			.where("user.email = :email", {email : validatedEmail})
-			.getOne();
+			return await this.userRepository.findOne({
+				where: {
+					email : validatedEmail
+				}
+			});
 
 		}
 		catch(error){

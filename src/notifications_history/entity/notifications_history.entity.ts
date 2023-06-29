@@ -7,6 +7,9 @@ export class NotificationsHistory {
     id : string;
 
     @Column()
+    title : string;
+
+    @Column()
     content : string;
 
     @Column('uuid')

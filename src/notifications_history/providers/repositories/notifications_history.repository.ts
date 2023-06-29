@@ -14,7 +14,11 @@ export class NotificationsHistoryRepository {
 
     async getAllNotifications() : Promise<NotificationsHistory[]> {
         try{
-            return await this.notificationHistoryRepository.find();
+            return await this.notificationHistoryRepository.find({
+				relations : {
+					sender : true
+				}
+			});
         }
         catch(error){
             throw new HttpException(

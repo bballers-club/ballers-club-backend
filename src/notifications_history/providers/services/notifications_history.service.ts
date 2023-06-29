@@ -22,13 +22,17 @@ export class NotificationsHistoryService {
     async sendAndSaveNotifications(notification : CreateNotificationsHistoryDao) : Promise<NotificationsHistoryDto> {
         try{    
             const content = z.string().parse(notification.content);
-           
+            const title = z.string().parse(notification.title)
+            
+            
             this.notifications.included_segments = ["Subscribed Users"];
             //Providing the notification content
             this.notifications.contents = {
                 'en' : content
             };
-            
+            this.notifications.headings = {
+                'en' : title
+            }
 
             const oneSignalResponse = await oneSignalClient.createNotification(this.notifications);
 

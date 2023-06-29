@@ -11,6 +11,7 @@ import {
 	Header,
 	Headers,
 	Patch,
+	Query,
 } from '@nestjs/common';
 import { UserService } from './providers/user.service';
 import { User } from './entity/user.entity';
@@ -98,8 +99,8 @@ export class UserController {
 	}
 
 	@Get("backoffice/users")
-	async getUsersListBackoffice() {
-		return await this.userService.usersForBackOffice();
+	async getUsersListBackoffice(@Query('researchValue') researchValue : string = "") {
+		return await this.userService.usersForBackOffice(researchValue);
 	}
 
 	@Post("backoffice/ban/:userId")

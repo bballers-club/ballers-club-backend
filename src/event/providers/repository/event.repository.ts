@@ -108,6 +108,7 @@ export class EventRepository {
         organizerId ?: string,
         playgroundId ?: string,
         eventName ?: string,
+        state ?: number,
         starting_date ?: Date,
         ending_date ?: Date,
         eventTime ?: Date
