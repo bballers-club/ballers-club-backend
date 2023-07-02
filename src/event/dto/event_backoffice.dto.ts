@@ -1,6 +1,8 @@
-import { ApiProperty } from "@nestjs/swagger";
+import { ApiProperty } from "@nestjs/swagger"
+import { Timestamp } from "rxjs"
+import { MatchDto } from "src/match/dto/match.dto"
 
-export class EventDto {
+export class EventBackofficeDto {
     @ApiProperty({
         description : "Event id",
         format : "uuid"
@@ -10,28 +12,24 @@ export class EventDto {
     @ApiProperty({
         description : "Id of the user who created the event"
     })
-    organizerId : string
-
-    @ApiProperty({
-        description : "Playground id where the event will take place",
-        nullable : true
-    })
-    playgroundId ?: string
-
-    @ApiProperty({
-        description : "Date when the event has been created"
-    })
-    createdAt : Date
-
-    @ApiProperty({
-        description : "Name of the event"
-    })
-    eventName : string
+    organizer : string
 
     @ApiProperty({
         description : "State of the event"
     })
     state : number
+
+    @ApiProperty({
+        description : "Playground id where the event will take place",
+        nullable : true
+    })
+    playground ?: string
+    
+
+    @ApiProperty({
+        description : "Date when the event has been created"
+    })
+    createdAt : Date
 
     @ApiProperty({
         description : "Date when the event will start",
@@ -45,14 +43,20 @@ export class EventDto {
     })
     ending_date : Date
 
+
     @ApiProperty({
-        description: "Time when the event starts",
-        nullable : true
+        description : "Name of the event"
     })
-    eventTime ?: Date
+    eventName : string
 
     @ApiProperty({
         description : "Event type"
     })
-    typeId : string
+    type : string
+
+    @ApiProperty({
+        description : "List of match related to the event",
+        nullable : true
+    })
+    matches ?: MatchDto[]
 }

@@ -6,8 +6,7 @@ import { EventRepository } from './providers/repository/event.repository';
 import { Event } from './entity/event.entity';
 import { CreateEventDto } from './dto/create_event.dto';
 import { UpdateEventDto } from './dto/update_event.dto';
-import { string } from 'zod';
-import { CreateEventParticipantDto } from 'src/event_participant/dto/create-event_participant.dto';
+import { EventBackofficeDto } from './dto/event_backoffice.dto';
 
 @ApiTags('event')
 @Controller('event')
@@ -53,7 +52,6 @@ export class EventController {
   })
   @Post("/create-and-add-participant")
   async createEventAndAddParticipant(@Body('event') event : CreateEventDto, @Body('participants') participants : string[]) : Promise<{id : string}> {
-    console.log(event,participants)
     return await this.eventService.createEventAndAddParticipant(event, participants);
   }
 
@@ -68,5 +66,16 @@ export class EventController {
       id : eventId,
       state : stateId
     })
+  }
+
+  @Get('/backoffice/events')
+  async getEventListForBackoffice() : Promise<EventBackofficeDto[]> {
+    
+    return await this.eventService.getEventsForBackoffice();
+  }
+
+  @Get('/backoffice/event/:id')
+  async getMatchesForEvent(@Param('id') id : string) : Promise<EventBackofficeDto> {
+    return await this.eventService.getEventAndMatchesRelatedToEvent(id);
   }
 }

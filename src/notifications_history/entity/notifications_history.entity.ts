@@ -19,7 +19,7 @@ export class NotificationsHistory {
     sender : User
 
     @CreateDateColumn({
-        type: 'timestamptz'
+        type: 'timestamp with time zone'
     })
     sentAt : Date
 }

@@ -5,9 +5,10 @@ import { eventProvider } from './providers/event.provider';
 import { DatabaseModule } from 'src/supabase_database/supabase_database.module';
 import { EventRepository } from './providers/repository/event.repository';
 import { EventParticipantModule } from 'src/event_participant/event_participant.module';
+import { MatchModule } from 'src/match/match.module';
 
 @Module({
-  imports: [DatabaseModule, EventParticipantModule],
+  imports: [DatabaseModule, EventParticipantModule, MatchModule],
   controllers: [EventController],
   providers: [...eventProvider,EventService, EventRepository]
 })

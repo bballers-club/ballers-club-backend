@@ -7,9 +7,16 @@ export class CreateEventDto {
     organizerId : string
 
     @ApiProperty({
-        description : "Playground id where the event will take place"
+        description : "Event type"
     })
-    playgroundId : string
+    typeId : string
+
+    @ApiProperty({
+        description : "Playground id where the event will take place",
+        nullable : true
+    })
+    playgroundId ?: string
+
 
     @ApiProperty({
         description : "Name of the event"

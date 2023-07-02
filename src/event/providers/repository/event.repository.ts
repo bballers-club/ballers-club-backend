@@ -185,7 +185,6 @@ export class EventRepository {
             .query(`select distinct
                 event."eventName",
                 event.starting_date,
-                event."eventTime",
                 playground.address,
                 playground.city,
                 event_type.name
@@ -198,6 +197,62 @@ export class EventRepository {
           `);
 
             return queried_data;
+        }
+        catch(error){
+            console.log(error);
+            throw new HttpException(
+				{
+					status: HttpStatus.BAD_REQUEST,
+					error: error.message,
+				},
+				HttpStatus.BAD_REQUEST,
+				{
+					cause: error,
+				},
+			);
+        }
+    }
+
+    async getEventListForBackoffice() : Promise<Event[]> {
+        try{
+            return await this.eventRepository.find({
+                relations:{
+                    organizer: true,
+                    playground: true,
+                    type:true
+                }
+            })
+        }
+        catch(error){
+            console.log(error);
+            throw new HttpException(
+				{
+					status: HttpStatus.BAD_REQUEST,
+					error: error.message,
+				},
+				HttpStatus.BAD_REQUEST,
+				{
+					cause: error,
+				},
+			);
+        }
+    }
+    
+    async getEventByIdForBackoffice(id : string) : Promise<Event> {
+        try{
+            const validated_id = z.string().uuid().parse(id);
+
+            return await this.eventRepository.findOne({
+                where:{
+                    id:validated_id
+                },
+                relationLoadStrategy:"join",
+                relations:{
+                    organizer:true,
+                    playground:true,
+                    type:true
+                }
+            })
         }
         catch(error){
             console.log(error);

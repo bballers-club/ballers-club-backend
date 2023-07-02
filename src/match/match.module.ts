@@ -9,6 +9,7 @@ import { MatchParticipantModule } from 'src/match_participant/match_participant.
 @Module({
   imports : [DatabaseModule, MatchParticipantModule],
   controllers: [MatchController],
-  providers: [...matchProvider,MatchService, MatchRepository]
+  providers: [...matchProvider,MatchService, MatchRepository],
+  exports:[MatchService,MatchRepository]
 })
 export class MatchModule {}

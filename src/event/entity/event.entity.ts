@@ -49,7 +49,7 @@ export class Event {
         nullable : true,
         default : "now()"
     })
-    starting_date ?: Timestamp
+    starting_date ?: Date
 
     @Column({
         type : 'date',
