@@ -18,6 +18,11 @@ export class UpdateEventDto
     playgroundId ?: string
 
     @ApiProperty({
+        description : "State of the event"
+    })
+    state : number
+
+    @ApiProperty({
         description : "Name of the event"
     })
     eventName ?: string
@@ -39,4 +44,9 @@ export class UpdateEventDto
         nullable : true
     })
     eventTime ?: Date
+
+    @ApiProperty({
+        description : "Event type"
+    })
+    typeId : string
 }

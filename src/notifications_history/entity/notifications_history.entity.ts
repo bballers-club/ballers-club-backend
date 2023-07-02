@@ -7,6 +7,9 @@ export class NotificationsHistory {
     id : string;
 
     @Column()
+    title : string;
+
+    @Column()
     content : string;
 
     @Column('uuid')
@@ -16,7 +19,7 @@ export class NotificationsHistory {
     sender : User
 
     @CreateDateColumn({
-        type: 'timestamptz'
+        type: 'timestamp with time zone'
     })
     sentAt : Date
 }

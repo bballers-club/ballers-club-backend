@@ -13,7 +13,9 @@ export class MatchParticipantRepository {
 
     private matchParticipantObjectValidator = z.object({
         matchId : z.string().uuid(),
-        userId : z.string().uuid()
+        userId : z.string().uuid(),
+        inTeamOne : z.boolean(),
+        inTeamTwo : z.boolean()
     });
 
     async findMatchParticipants(matchId : string) : Promise<MatchParticipant[]> {
@@ -45,10 +47,20 @@ export class MatchParticipantRepository {
     
     async addParticipant(match_participants : {
         matchId : string,
-        userId : string
+        userId : string,
+        inTeamOne : boolean,
+        inTeamTwo : boolean
     }[]) : Promise<MatchParticipant[]> {
         try{
             const validatedParticipants = match_participants.map((match_participant) => {
+                if(
+                    (match_participant.inTeamOne && match_participant.inTeamTwo)
+                    ||
+                    (!match_participant.inTeamOne && !match_participant.inTeamTwo)
+                ){
+                    throw new HttpException("Participant must be in a team AND can't be in both team", HttpStatus.BAD_REQUEST)
+                }
+
                 const validatedMatchParticipants = this.matchParticipantObjectValidator.parse(match_participant);
 
                 return this.matchParticipantRepository.create(validatedMatchParticipants);
@@ -59,10 +71,10 @@ export class MatchParticipantRepository {
         catch(error){
             throw new HttpException(
 				{
-					status: HttpStatus.BAD_REQUEST,
-					error: error.message,
+					status: error.status,
+					error: error.cause.response,
 				},
-				HttpStatus.BAD_REQUEST,
+				error.status,
 				{
 					cause: error,
 				},
@@ -84,10 +96,35 @@ export class MatchParticipantRepository {
         catch(error){
             throw new HttpException(
 				{
-					status: HttpStatus.BAD_REQUEST,
-					error: error.message,
+					status: error.status,
+					error: error.cause.response,
 				},
-				HttpStatus.BAD_REQUEST,
+				error.status,
+				{
+					cause: error,
+				},
+			);
+        }
+    }
+
+    async createMatchParticipantObject(match_participant : {
+        matchId : string,
+        userId : string,
+        inTeamOne : boolean,
+        inTeamTwo : boolean
+    }) : Promise<MatchParticipant>{
+        try {
+            return await this.matchParticipantRepository.create({
+                ...match_participant
+            });
+        }
+        catch(error){
+            throw new HttpException(
+				{
+					status: error.status,
+					error: error.cause.response,
+				},
+				error.status,
 				{
 					cause: error,
 				},

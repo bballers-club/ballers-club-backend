@@ -1,4 +1,4 @@
-import { Column, CreateDateColumn, Entity, ManyToOne, OneToMany, PrimaryColumn, PrimaryGeneratedColumn } from "typeorm";
+import { Column, CreateDateColumn, Entity, ManyToOne, OneToMany, PrimaryColumn, PrimaryGeneratedColumn, Timestamp } from "typeorm";
 import { User } from '../../user/entity/user.entity';
 import { EventType } from "src/event_type/entity/event_type.entity";
 import { Match } from "src/match/entity/match.entity";
@@ -12,6 +12,16 @@ export class Event {
 
     @Column()
     organizerId : string
+
+    @Column({
+        nullable : true
+    })
+    playgroundId : string
+
+    @Column({
+        nullable : false
+    })
+    typeId : string
 
     @ManyToOne(() => User, user => user.event)
     organizer : User
@@ -35,26 +45,20 @@ export class Event {
 	createdAt: Date;
 
     @Column({
-        type : 'date',
+        type : 'timestamp with time zone',
         nullable : true,
         default : "now()"
     })
-    starting_date : Date
+    starting_date ?: Date
 
     @Column({
         type : 'date',
         nullable : true
     })
-    ending_date : 'date'
+    ending_date ?: Date
 
     @Column({
         enum : [1,2,3] //1 : Ouvert | 2 : En cours | 3 : Terminé 
     })
     state : number
-
-    @Column({
-        type : "time with time zone",
-        nullable : true
-    })
-    eventTime : Date
 }

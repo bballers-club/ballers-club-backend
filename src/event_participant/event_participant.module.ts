@@ -8,6 +8,7 @@ import { eventParticipantProvider } from './providers/event_participant.provider
 @Module({
   imports : [DatabaseModule],
   controllers: [EventParticipantController],
-  providers: [...eventParticipantProvider,EventParticipantService, EventParticipantRepository]
+  providers: [...eventParticipantProvider,EventParticipantService, EventParticipantRepository],
+  exports: [EventParticipantRepository]
 })
 export class EventParticipantModule {}

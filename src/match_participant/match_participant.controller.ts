@@ -3,7 +3,9 @@ import { CreateMatchParticipantDto } from './dto/create-match_participant.dto';
 import { MatchParticipantRepository } from './providers/repository/match_participant.repository';
 import { MatchParticipantDto } from './dto/match_participant.dto';
 import { MatchParticipantService } from './providers/services/match_participant.service';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('match-participant')
 @Controller('match-participant')
 export class MatchParticipantController {
   constructor(private readonly matchParticipantService: MatchParticipantService, private readonly matchParticipantRepository : MatchParticipantRepository) {}
