@@ -75,12 +75,7 @@ export class UserService {
 		avatarUrl?: string;
 	}): Promise<User> {
 		try {
-			const validatedUserObjectWithoutId =
-				this.userObjectValidator.parse(user);
-
-			const validated_email = z.string().email().safeParse(user.email);
-			const validated_url = z.string().safeParse(user.avatarUrl);
-
+		
 			const createdUser = await this.userRepository.create({
 				...user,
 			});
