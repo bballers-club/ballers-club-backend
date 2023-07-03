@@ -70,7 +70,7 @@ export class UserService {
 
 	async create(user: {
 		id: string;
-		email : string;
+		email ?: string;
 		username: string;
 		level: string;
 		position: string;

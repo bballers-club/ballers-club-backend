@@ -35,5 +35,5 @@ export class CreateUserDto {
 	@ApiProperty({
 		description : 'Email of the user'
 	})
-	email : string
+	email ?: string
 }

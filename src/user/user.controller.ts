@@ -90,11 +90,11 @@ export class UserController {
 	@SkipAuth()
 	@Post("from-api")
 	async createUserFromApi(
-	@Body("email") email : string, 
 	@Body("password") password : string, 
 	@Body("level") level : string, 
 	@Body("username") username : string, 
-	@Body("position") position : string) : Promise<CreateUserDto> {
+	@Body("position") position : string,
+	@Body("email") email ?: string, ) : Promise<CreateUserDto> {
 		return await this.userService.createUserFromApi(email,password,username,level,position);
 	}
 
