@@ -19,16 +19,14 @@ export class UserService {
 			avatarUrl: z.string(),
 			position: z.string(),
 			level: z.string(),
-			email: z.string()
+			email: z.string().email()
 		})
 		.partial({
 			id: true,
 			username: true,
-			avatarUrl: true,
 			position: true,
 			level: true,
-			email : true
-		});
+		})
 
 	async findAll(): Promise<User[]> {
 		try {
@@ -80,8 +78,11 @@ export class UserService {
 			const validatedUserObjectWithoutId =
 				this.userObjectValidator.parse(user);
 
+			const validated_email = z.string().email().safeParse(user.email);
+			const validated_url = z.string().safeParse(user.avatarUrl);
+
 			const createdUser = await this.userRepository.create({
-				...validatedUserObjectWithoutId,
+				...user,
 			});
 
 			return await this.userRepository.save(createdUser);
@@ -128,9 +129,10 @@ export class UserService {
 	): Promise<User> {
 		try {
 			const validatedUser = this.userObjectValidator.parse(user);
+			const validated_email = z.string().email().parse(user.email)
 
 			const {error} = await supabaseClient.auth.admin.updateUserById(id, {
-				email : validatedUser.email
+				email : validated_email
 			});
 			
 			if(error){
@@ -138,7 +140,7 @@ export class UserService {
 			}
 
 			await this.userRepository.update(id, {
-				...validatedUser,
+				...user,
 			});
 
 			return await this.findOneById(id);
