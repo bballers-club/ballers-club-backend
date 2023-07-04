@@ -13,6 +13,7 @@ export class PlaygroundsService {
 		zipcode: z.string(),
 		latitude: z.number(),
 		longitude: z.number(),
+		request_pending : z.boolean()
 	});
 
 	constructor(
