@@ -140,11 +140,13 @@ export class PlaygroundsService {
 			);
 		}
 	}
-	async delete(id: string): Promise<void> {
+	async delete(id: string): Promise<string> {
 		try {
 			const validatedId = z.string().uuid().parse(id);
 
 			await this.playgroundRepository.delete(validatedId);
+
+			return validatedId;
 		} catch (error) {
 			throw new HttpException(
 				{

@@ -108,7 +108,7 @@ export class PlaygroundsController {
 
 	@ApiTags('playgrounds')
 	@Delete(':id')
-	async deletePlayground(@Param('id') id: string): Promise<void> {
+	async deletePlayground(@Param('id') id: string): Promise<string> {
 		return this.playgroundsService.delete(id);
 	}
 }
