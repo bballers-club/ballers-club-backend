@@ -264,6 +264,7 @@ export class PlaygroundsService {
 			});
 
 		} catch (error) {
+			console.error(error);
 			throw new HttpException(
 				{
 					status: error.status,

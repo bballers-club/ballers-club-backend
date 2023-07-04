@@ -26,7 +26,6 @@ export class PlaygroundsController {
 		status: 200,
 		type: PlaygroundDto,
 	})
-	@SkipAuth()
 	@Get()
 	async findAllPlaygrounds(@Query('query') query: string, @Query('page') page: number,@Query('size') size: number): Promise<Playground[]> {
 		let parsedPage = 1;
@@ -42,6 +41,12 @@ export class PlaygroundsController {
 			parsedPage,
 			parsedSize,
 		);
+	}
+
+	@Get('/requests')
+	async getPlaygroundRequests() : Promise<PlaygroundDto[]> {
+		
+		return await this.playgroundsService.getPlaygroundRequest();
 	}
 
 	@ApiTags('playgrounds')
@@ -105,10 +110,5 @@ export class PlaygroundsController {
 	@Delete(':id')
 	async deletePlayground(@Param('id') id: string): Promise<void> {
 		return this.playgroundsService.delete(id);
-	}
-
-	@Get('/requests')
-	async getPlaygroundRequests() : Promise<PlaygroundDto[]> {
-		return await this.playgroundsService.getPlaygroundRequest();
 	}
 }

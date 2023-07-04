@@ -24,7 +24,6 @@ export class NotificationsHistoryService {
             const content = z.string().parse(notification.content);
             const title = z.string().parse(notification.title)
             
-            
             this.notifications.included_segments = ["Subscribed Users"];
             //Providing the notification content
             this.notifications.contents = {
@@ -38,6 +37,7 @@ export class NotificationsHistoryService {
 
             if(oneSignalResponse.errors)
             {
+                console.error(oneSignalResponse.errors)
                 throw new HttpException(oneSignalResponse.errors,400);
             }
 
@@ -45,6 +45,7 @@ export class NotificationsHistoryService {
             
         }
         catch(error){
+            console.error(error)
             throw new HttpException(
 				{
 					status: error.status,
