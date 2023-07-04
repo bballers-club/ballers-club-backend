@@ -253,4 +253,27 @@ export class PlaygroundsService {
 			);
 		}
 	}
+
+	async getPlaygroundRequest() : Promise<Playground[]> {
+		try {
+			
+			return await this.playgroundRepository.find({
+				where: {
+					request_pending: true
+				}
+			});
+
+		} catch (error) {
+			throw new HttpException(
+				{
+					status: error.status,
+					error: error.message,
+				},
+				error.status,
+				{
+					cause: error,
+				},
+			);
+		}
+	}
 }

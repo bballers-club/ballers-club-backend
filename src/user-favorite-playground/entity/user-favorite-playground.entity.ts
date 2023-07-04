@@ -11,10 +11,16 @@ export class UserFavoritePlayground {
     @PrimaryColumn("uuid")
     playgroundId : string
 
-    @ManyToOne(() => User, user => user.id)
+    @ManyToOne(() => User, user => user.id, {
+        onDelete : 'CASCADE',
+        onUpdate: 'CASCADE',
+    })
     user : User
 
-    @ManyToOne(() => Playground, playground => playground.id)
+    @ManyToOne(() => Playground, playground => playground.id, {
+        onDelete : 'CASCADE',
+        onUpdate: 'CASCADE',
+    })
     playground : Playground
 
 }

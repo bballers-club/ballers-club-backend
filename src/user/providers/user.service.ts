@@ -1,7 +1,7 @@
 import { Injectable, Inject, HttpException, HttpStatus } from '@nestjs/common';
 import { Repository, ILike } from 'typeorm';
 import { User } from '../entity/user.entity';
-import { z } from 'zod';
+import { string, z } from 'zod';
 import { supabaseClient } from 'src/main';
 import { DateUtils } from 'src/utils/date.utils';
 
@@ -75,9 +75,20 @@ export class UserService {
 		avatarUrl?: string;
 	}): Promise<User> {
 		try {
+
+			const {data,error} = await supabaseClient.auth.admin.getUserById(user.id);
+
+			if(error){
+				throw new HttpException('An error occured when trying to create the user', HttpStatus.BAD_REQUEST);
+			}
 		
 			const createdUser = await this.userRepository.create({
-				...user,
+				id : user.id,
+				email : data.user.email,
+				username : user.username,
+				level : user.level,
+				position : user.position,
+				avatarUrl: user.avatarUrl
 			});
 
 			return await this.userRepository.save(createdUser);
@@ -95,11 +106,29 @@ export class UserService {
 		}
 	}
 
-	async delete(id: string): Promise<void> {
+	async delete(id: string, user_that_delete : string): Promise<string> {
 		try {
+			const [type, token] = user_that_delete.split(' ') ?? [];
+			const {data} = await supabaseClient.auth.getUser(token);
+	
+			const userHasBannedData = await this.findOneById(data.user.id);
+
+			if(userHasBannedData.role != "admin")
+			{
+				throw new HttpException('Unauthorized action', HttpStatus.FORBIDDEN);
+
+			}
 			const validatedId = z.string().uuid().parse(id);
 
 			await this.userRepository.delete(validatedId);
+
+			const {error} = await supabaseClient.auth.admin.deleteUser(validatedId, false);
+
+			if(error){
+				throw new HttpException('An error occurred while trying to delete',400);
+			}
+
+			return validatedId;
 		} catch (error) {
 			throw new HttpException(
 				{
@@ -123,17 +152,23 @@ export class UserService {
 		},
 	): Promise<User> {
 		try {
-			const validatedUser = this.userObjectValidator.parse(user);
-			const validated_email = z.string().email().parse(user.email)
-
-			const {error} = await supabaseClient.auth.admin.updateUserById(id, {
-				email : validated_email
-			});
 			
-			if(error){
-				throw new HttpException("Invalid parameters",HttpStatus.BAD_REQUEST);
-			}
+			
 
+			if(user.email != null && user.email.length > 0){
+				const validated_email = z.string().email().parse(user.email)
+
+				const {error} = await supabaseClient.auth.admin.updateUserById(id, {
+					email : validated_email
+				});
+
+				if(error){
+					throw new HttpException("Invalid parameters",HttpStatus.BAD_REQUEST);
+				}
+	
+			}
+			
+			
 			await this.userRepository.update(id, {
 				...user,
 			});
@@ -316,10 +351,10 @@ export class UserService {
 		catch(error){
 			throw new HttpException(
 				{
-					status: HttpStatus.BAD_REQUEST,
-					error: `Invalid parameter : ${error.message}`,
+					status: error.status,
+					error: error.message,
 				},
-				HttpStatus.BAD_REQUEST,
+				error.status,
 				{
 					cause: error,
 				},

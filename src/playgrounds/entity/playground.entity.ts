@@ -7,7 +7,7 @@ export class Playground {
 	id: string;
 
 	@OneToMany(() => Event, event => event.playground)
-	event : Event
+	event : Event[]
 
 	@Column({ length: 150 })
 	name: string;

@@ -7,12 +7,18 @@ export class EventParticipant {
     @PrimaryColumn("uuid")
     eventId : string
 
-    @ManyToOne(() => Event, event => event.id)
+    @ManyToOne(() => Event, event => event.id, {
+        onDelete : 'CASCADE',
+        onUpdate: 'CASCADE',
+    })
     event : Event
 
     @PrimaryColumn("uuid")
     userId : string
 
-    @ManyToOne(() => User, user => user.event_participant)
+    @ManyToOne(() => User, user => user.event_participant, {
+        onDelete : 'CASCADE',
+        onUpdate: 'CASCADE',
+    })
     user : User
 }

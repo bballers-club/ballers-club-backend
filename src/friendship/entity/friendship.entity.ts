@@ -9,10 +9,16 @@ export class Friendship {
 	@PrimaryColumn('uuid')
 	userTwoId: string;
 
-	@ManyToOne(() => User, (user) => user.userOne)
+	@ManyToOne(() => User, (user) => user.userOne, {
+        onDelete : 'CASCADE',
+        onUpdate: 'CASCADE',
+    })
 	userOne: User;
 
-	@ManyToOne(() => User, (user) => user.userTwo)
+	@ManyToOne(() => User, (user) => user.userTwo, {
+        onDelete : 'CASCADE',
+        onUpdate: 'CASCADE',
+    })
 	userTwo: User;
 
 	@CreateDateColumn({ type: 'date' })

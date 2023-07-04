@@ -19,6 +19,9 @@ export class MatchParticipant {
     @ManyToOne(() => Match, match => match.match_participant)
     match : Match[]
 
-    @ManyToOne(() => User, user => user.match_participant)
+    @ManyToOne(() => User, user => user.match_participant, {
+        onDelete : 'CASCADE',
+        onUpdate: 'CASCADE',
+    })
     user : User[]
 }

@@ -16,8 +16,10 @@ export class Team {
 	@Column({ length: 150 })
 	name: string;
 
-	@ManyToMany(() => User, (user) => user.teams, { cascade: ['insert'] })
-	@JoinTable({})
+	@ManyToMany(() => User, (user) => user.teams,  {
+        onDelete : 'CASCADE',
+        onUpdate: 'CASCADE',
+    })
 	players: User[];
 
 	@CreateDateColumn({ type: 'date' })

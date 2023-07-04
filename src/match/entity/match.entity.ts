@@ -13,7 +13,9 @@ export class Match {
     @ManyToOne(() => Event, event => event.id)
     event : Event
 
-    @OneToMany(() => MatchParticipant, match_participant => match_participant.match)
+    @OneToMany(() => MatchParticipant, match_participant => match_participant.match, {
+        onDelete: 'CASCADE'
+    })
     match_participant : MatchParticipant
 
     @Column({

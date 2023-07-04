@@ -106,4 +106,9 @@ export class PlaygroundsController {
 	async deletePlayground(@Param('id') id: string): Promise<void> {
 		return this.playgroundsService.delete(id);
 	}
+
+	@Get('/requests')
+	async getPlaygroundRequests() : Promise<PlaygroundDto[]> {
+		return await this.playgroundsService.getPlaygroundRequest();
+	}
 }

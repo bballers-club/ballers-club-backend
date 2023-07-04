@@ -15,7 +15,10 @@ export class NotificationsHistory {
     @Column('uuid')
     senderId : string
 
-    @ManyToOne(() => User, user => user.notifications)
+    @ManyToOne(() => User, user => user.notifications, {
+        onDelete : 'CASCADE',
+        onUpdate: 'CASCADE',
+    })
     sender : User
 
     @CreateDateColumn({

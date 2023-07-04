@@ -23,10 +23,16 @@ export class Event {
     })
     typeId : string
 
-    @ManyToOne(() => User, user => user.event)
+    @ManyToOne(() => User, user => user.event, {
+        onDelete : 'CASCADE',
+        onUpdate: 'CASCADE',
+    })
     organizer : User
 
-    @ManyToOne(() => EventType, event_type => event_type.event)
+    @ManyToOne(() => EventType, event_type => event_type.event, {
+        onDelete : 'CASCADE',
+        onUpdate: 'CASCADE',
+    })
     type : EventType
 
     @OneToMany(() => Match, match => match.event)
