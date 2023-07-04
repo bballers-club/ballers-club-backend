@@ -9,10 +9,16 @@ export class FriendshipRequest {
 	@PrimaryColumn('uuid')
 	requestReceiverId: string;
 
-	@ManyToOne(() => User, (user) => user.userOne)
+	@ManyToOne(() => User, (user) => user.userOne,{
+        onDelete : 'CASCADE',
+        onUpdate: 'CASCADE',
+    })
 	requestSender: User;
 
-	@ManyToOne(() => User, (user) => user.userTwo)
+	@ManyToOne(() => User, (user) => user.userTwo,{
+        onDelete : 'CASCADE',
+        onUpdate: 'CASCADE',
+    })
 	requestReceiver: User;
 
 	@CreateDateColumn({

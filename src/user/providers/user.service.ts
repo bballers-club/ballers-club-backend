@@ -422,9 +422,9 @@ export class UserService {
 		try {
 			const validatedUser = this.userObjectValidator.parse(user);
 
-			const {error} = await supabaseClient.auth.admin.updateUserById(id, {
-				email : validatedUser.email
-			});
+				const {error} = await supabaseClient.auth.admin.updateUserById(id, {
+					email : validatedUser.email
+				});
 		
 			if(error){
 				throw new HttpException(error.message,HttpStatus.BAD_REQUEST);
