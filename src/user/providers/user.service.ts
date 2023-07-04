@@ -79,7 +79,7 @@ export class UserService {
 			const {data,error} = await supabaseClient.auth.admin.getUserById(user.id);
 
 			if(error){
-				throw new HttpException('An error occured when trying to create the user', HttpStatus.BAD_REQUEST);
+				throw new HttpException(error, HttpStatus.BAD_REQUEST);
 			}
 		
 			const createdUser = await this.userRepository.create({
