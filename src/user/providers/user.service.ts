@@ -255,7 +255,7 @@ export class UserService {
 		username : string,
 		email : string,
 		createdAt : string,
-		isBanned: Boolean
+		is_banned: Boolean
 	}[]> {
 		try {
 			
@@ -264,7 +264,7 @@ export class UserService {
 				username : string,
 				email : string,
 				createdAt : string,
-				isBanned : Boolean
+				is_banned : Boolean
 			}[] = [];
 
 			let users : User[];
@@ -295,7 +295,7 @@ export class UserService {
 					username : user.username,
 					email : user.email,
 					createdAt : user.createdAt.toString(),
-					isBanned : user.is_banned
+					is_banned : user.is_banned
 				})
 			}
 					
@@ -417,21 +417,25 @@ export class UserService {
 			username : string,
 			email : string,
 			createdAt : string
-			isBanned: Boolean
+			is_banned: Boolean
 		}[]> {
 		try {
-			const validatedUser = this.userObjectValidator.parse(user);
+			
 
+			if(user.email != undefined && user.email.length > 0)
+			{
 				const {error} = await supabaseClient.auth.admin.updateUserById(id, {
-					email : validatedUser.email
+					email : user.email
 				});
-		
-			if(error){
-				throw new HttpException(error.message,HttpStatus.BAD_REQUEST);
-			}
 
+				if(error){
+					throw new HttpException(error.message,HttpStatus.BAD_REQUEST);
+				}
+			}
+			
+		
 			await this.userRepository.update(id, {
-				...validatedUser,
+				...user,
 			});
 
 			return await this.usersForBackOffice();

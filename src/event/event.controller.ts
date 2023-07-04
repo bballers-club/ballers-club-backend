@@ -69,9 +69,9 @@ export class EventController {
   }
 
   @Get('/backoffice/events')
-  async getEventListForBackoffice() : Promise<EventBackofficeDto[]> {
+  async getEventListForBackoffice(@Query('researchValue') researchValue : string = "") : Promise<EventBackofficeDto[]> {
     
-    return await this.eventService.getEventsForBackoffice();
+    return await this.eventService.getEventsForBackoffice(researchValue);
   }
 
   @Get('/backoffice/event/:id')

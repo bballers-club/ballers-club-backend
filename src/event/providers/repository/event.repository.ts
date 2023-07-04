@@ -1,5 +1,5 @@
 import { Injectable, Inject, HttpStatus, HttpException } from "@nestjs/common";
-import { Repository } from 'typeorm';
+import { ILike, Repository } from 'typeorm';
 import { EVENT_REPOSITORY } from "../event.constants";
 import { z } from "zod";
 import { Event } from "src/event/entity/event.entity";
@@ -213,15 +213,33 @@ export class EventRepository {
         }
     }
 
-    async getEventListForBackoffice() : Promise<Event[]> {
+    async getEventListForBackoffice(researchValue : string = "") : Promise<Event[]> {
         try{
-            return await this.eventRepository.find({
-                relations:{
-                    organizer: true,
-                    playground: true,
-                    type:true
-                }
-            })
+            if(researchValue.length > 1)
+            {
+
+                return await this.eventRepository.find({
+                    where:[
+                        {
+                            eventName : ILike(`%${researchValue}%`)
+                        }
+                    ],
+                    relations:{
+                        organizer: true,
+                        playground: true,
+                        type:true
+                    }
+                })
+
+            }else{
+                return await this.eventRepository.find({
+                    relations:{
+                        organizer: true,
+                        playground: true,
+                        type:true
+                    }
+                })
+            }
         }
         catch(error){
             console.log(error);

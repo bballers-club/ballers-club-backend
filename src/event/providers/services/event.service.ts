@@ -53,10 +53,10 @@ export class EventService {
         }
 	}
 
-	async getEventsForBackoffice() : Promise<EventBackofficeDto[]>{
+	async getEventsForBackoffice(researchValue : string = "") : Promise<EventBackofficeDto[]>{
 		try{
 		
-			const events = await this.eventRepository.getEventListForBackoffice();
+			const events = await this.eventRepository.getEventListForBackoffice(researchValue);
 
 			const event_backoffice : EventBackofficeDto[] = [];
 			for(const event of events){
