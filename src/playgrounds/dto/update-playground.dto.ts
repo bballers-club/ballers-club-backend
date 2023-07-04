@@ -39,4 +39,9 @@ export class UpdatePlaygroundDto {
 		nullable: true,
 	})
 	longitude?: number;
+
+	@ApiProperty({
+		description : "If the playground is a request or not"
+	})
+	request_pending : boolean;
 }

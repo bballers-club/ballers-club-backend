@@ -113,6 +113,7 @@ export class PlaygroundsService {
 			zipcode?: string;
 			latitude?: number;
 			longitude?: number;
+			request_pending ?: boolean;
 		},
 	): Promise<Playground> {
 		try {
