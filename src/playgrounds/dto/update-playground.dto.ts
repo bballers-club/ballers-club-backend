@@ -43,5 +43,5 @@ export class UpdatePlaygroundDto {
 	@ApiProperty({
 		description : "If the playground is a request or not"
 	})
-	request_pending : boolean;
+	request_pending ?: boolean;
 }
