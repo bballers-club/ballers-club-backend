@@ -84,7 +84,7 @@ export class PlaygroundsService {
 	}): Promise<Playground> {
 		try {
 			const playgroundValidated =
-				this.playgroundObjectValidator.parse(playground);
+				this.playgroundObjectValidator.omit({request_pending : true}).parse(playground);
 
 			const createdPlayground = await this.playgroundRepository.create({
 				...playgroundValidated,
