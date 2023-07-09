@@ -10,13 +10,13 @@ import {
 } from '@nestjs/common';
 import { PlaygroundsService } from './providers/playgrounds.service';
 import { Playground } from './entity/playground.entity';
-import { SkipAuth } from 'src/decorators/skip_auth.decorator';
 import { CreatePlaygroundDto } from './dto/create-playground.dto';
 import { UpdatePlaygroundDto } from './dto/update-playground.dto';
 import { ApiTags, ApiResponse, ApiBody, ApiParam } from '@nestjs/swagger';
 import { number } from 'zod';
 import { PlaygroundDto } from './dto/playground.dto';
 
+@ApiTags('playgrounds')
 @Controller('playgrounds')
 export class PlaygroundsController {
 	constructor(private readonly playgroundsService: PlaygroundsService) {}

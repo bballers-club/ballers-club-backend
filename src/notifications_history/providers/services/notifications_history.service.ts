@@ -21,6 +21,11 @@ export class NotificationsHistoryService {
 
     async sendAndSaveNotifications(notification : CreateNotificationsHistoryDao) : Promise<NotificationsHistoryDto> {
         try{    
+
+            if(notification.content.length <= 0 || notification.title.length <= 0){
+                throw new HttpException('Title and content must be filled', 400);
+            }
+
             const content = z.string().parse(notification.content);
             const title = z.string().parse(notification.title)
             

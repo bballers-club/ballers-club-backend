@@ -1,6 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { NotificationsHistoryController } from './notifications_history.controller';
-import { NotificationsHistoryService } from './notifications_history.service';
+import { NotificationsHistoryService } from './providers/services/notifications_history.service';
 
 describe('NotificationsHistoryController', () => {
   let controller: NotificationsHistoryController;

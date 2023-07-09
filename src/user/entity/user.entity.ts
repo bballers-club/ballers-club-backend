@@ -12,6 +12,7 @@ import { Event } from 'src/event/entity/event.entity';
 import { EventParticipant } from 'src/event_participant/entity/event_participant.entity';
 import { MatchParticipant } from 'src/match_participant/entities/match_participant.entity';
 import { NotificationsHistory } from 'src/notifications_history/entity/notifications_history.entity';
+import { EventInvitation } from 'src/event_invitation/entity/event_invitation.entity';
 
 
 @Entity()
@@ -100,6 +101,12 @@ export class User {
 
 	@OneToMany(() => NotificationsHistory , (notifications) => notifications.sender)
 	notifications : NotificationsHistory[]
+
+	@OneToMany(() => EventInvitation, (event_invitation) => event_invitation.inviter)
+	event_invitation_inviter : EventInvitation[]
+
+	@OneToMany(() => EventInvitation, (event_invitation) => event_invitation.invitedUser)
+	event_invitation_invitedUser : EventInvitation[]
 
 	@CreateDateColumn({ type: 'date' })
 	createdAt: Date;

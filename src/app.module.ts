@@ -18,6 +18,7 @@ import { MatchParticipantModule } from './match_participant/match_participant.mo
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
 import { NotificationsHistoryModule } from './notifications_history/notifications_history.module';
+import { EventInvitationModule } from './event_invitation/event_invitation.module';
 
 @Module({
 	imports: [
@@ -39,7 +40,8 @@ import { NotificationsHistoryModule } from './notifications_history/notification
 		MatchModule,
 		EventParticipantModule,
 		MatchParticipantModule,
-		NotificationsHistoryModule
+		NotificationsHistoryModule,
+		EventInvitationModule
 	],
 	controllers: [AppController],
 	providers: [AppService],

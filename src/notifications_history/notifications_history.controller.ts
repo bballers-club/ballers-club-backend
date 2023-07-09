@@ -3,7 +3,9 @@ import { NotificationsHistoryService } from './providers/services/notifications_
 import { NotificationsHistoryRepository } from './providers/repositories/notifications_history.repository';
 import { NotificationsHistoryDto } from './dto/notifications_history.dto';
 import { CreateNotificationsHistoryDto } from './dto/create_notifications_history.dto';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('notifications-history')
 @Controller('notifications-history')
 export class NotificationsHistoryController {
   constructor(private readonly notificationsHistoryService: NotificationsHistoryService, private readonly notificationsHistoryRepository : NotificationsHistoryRepository) {}

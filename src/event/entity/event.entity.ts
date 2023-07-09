@@ -4,6 +4,7 @@ import { EventType } from "src/event_type/entity/event_type.entity";
 import { Match } from "src/match/entity/match.entity";
 import { EventParticipant } from "src/event_participant/entity/event_participant.entity";
 import { Playground } from "src/playgrounds/entity/playground.entity";
+import { EventInvitation } from "src/event_invitation/entity/event_invitation.entity";
 
 @Entity()
 export class Event {
@@ -67,4 +68,7 @@ export class Event {
         enum : [1,2,3] //1 : Ouvert | 2 : En cours | 3 : Terminé 
     })
     state : number
+
+    @OneToMany(() => EventInvitation, (event_invitation) => event_invitation.event)
+    event_invitation : EventInvitation[]
 }
